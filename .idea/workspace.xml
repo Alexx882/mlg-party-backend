@@ -1,12 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="509d680d-1b6e-487d-8318-b6bae55a5ad7" name="Default Changelist" comment="" />
+    <list default="true" id="509d680d-1b6e-487d-8318-b6bae55a5ad7" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/.mvn/wrapper/MavenWrapperDownloader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/src/main/java/mlg/party/leaderboard/LeaderboardApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/src/main/java/mlg/party/leaderboard/score/ScoreController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/src/main/resources/application.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/leaderboard/src/test/java/mlg/party/leaderboard/LeaderboardApplicationTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leaderboard/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/leaderboard/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/rock-paper-scissors/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/rock-paper-scissors/pom.xml" afterDir="false" />
+    </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="MavenImportPreferences">
     <option name="importingSettings">
@@ -16,7 +43,11 @@
     </option>
   </component>
   <component name="ProjectId" id="1Tk7R8Dh4MB0szK445HvsGfEHDZ" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
@@ -35,6 +66,15 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="LeaderboardApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="leaderboard" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="mlg.party.leaderboard.LeaderboardApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -45,11 +85,22 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1573992228911</updated>
-      <workItem from="1573992232570" duration="174000" />
+      <workItem from="1573992232570" duration="1420000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
