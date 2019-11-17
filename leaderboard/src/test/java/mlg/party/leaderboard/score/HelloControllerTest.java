@@ -39,6 +39,7 @@ public class HelloControllerTest {
                 .andReturn();
 
         String body = result.getResponse().getContentAsString();
+        System.out.println(body);
         assertEquals(body, "Hello Herry");
     }
 }
