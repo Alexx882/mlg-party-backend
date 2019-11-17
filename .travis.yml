@@ -1,0 +1,18 @@
+language: java
+jdk: oraclejdk13
+# sudo: required
+
+script:
+- ./mvnw clean install -B
+- ./mvnw clean org.jacoco:jacoco-maven-plugin:prepare-agent package sonar:sonar
+
+addons:
+  sonarcloud:
+    organization: "mlg-party" # der key der organisation auf sonarcloud.io
+    token:
+      secure: $SONAR_TOKEN       # $SONAR_TOKEN -> Umgebungsvariable auf travis-ci.org
+
+notifications:
+  email: 
+    on_success: never # default: change
+    on_failure: never # default: always
