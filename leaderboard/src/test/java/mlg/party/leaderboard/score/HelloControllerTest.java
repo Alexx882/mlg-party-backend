@@ -30,16 +30,4 @@ public class HelloControllerTest {
         String body = result.getResponse().getContentAsString();
         assertEquals(body, "Hello World");
     }
-
-    @Test
-    public void helloTestWhichShouldFail() throws Exception {
-        MvcResult result = mvc.perform(MockMvcRequestBuilders.get("/hello"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andReturn();
-
-        String body = result.getResponse().getContentAsString();
-        System.out.println(body);
-        assertEquals(body, "Hello Herry");
-    }
 }
