@@ -1,4 +1,4 @@
-package mlg.party.lobby.lobby;
+package mlg.party.lobby.lobby.id;
 
 import org.springframework.stereotype.Service;
 

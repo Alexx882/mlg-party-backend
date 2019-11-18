@@ -28,10 +28,16 @@ public class ParserTest {
 
     @Test
     public void testProperlyFormattedCreateLobbyRequest() {
-        String properlyFormattedCreateLobbyRequest = "{\"type\":\"CreateLobby\"}";
+        String properlyFormattedCreateLobbyRequest = "{\"type\":\"CreateLobby\",\"playerName\":\"Franz\"}";
         AbstractWebsocketRequest request = parser.parseMessage(properlyFormattedCreateLobbyRequest);
 
         assert request instanceof CreateLobbyRequest;
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testMissingNameCreateRequest() {
+        String properlyFormattedCreateLobbyRequest = "{\"type\":\"CreateLobby\"}";
+        parser.parseMessage(properlyFormattedCreateLobbyRequest);
     }
 
     @Test(expected = IllegalArgumentException.class)

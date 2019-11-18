@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import mlg.party.lobby.logging.ILogger;
 import mlg.party.lobby.websocket.requests.AbstractWebsocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
+import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -37,7 +38,14 @@ public class RequestParser implements IRequestParser {
         try {
             switch (type) {
                 case "CreateLobby":
+                    if (!jsonObject.has("playerName"))
+                        throw new IllegalArgumentException("Missing fields");
+
                     return gson.fromJson(json, CreateLobbyRequest.class);
+                case "JoinLobby":
+                    if (!jsonObject.has("lobbyName") || !jsonObject.has("playerName"))
+                        throw new IllegalArgumentException("Missing fields");
+                    return gson.fromJson(json, JoinLobbyRequest.class);
                 default:
                     throw new IllegalArgumentException("Invalid message type: '" + type + "'");
             }
