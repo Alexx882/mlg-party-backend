@@ -12,6 +12,10 @@ addons:
     token:
       secure: $SONAR_TOKEN       # $SONAR_TOKEN -> Umgebungsvariable auf travis-ci.org
 
+script:
+  - mvn test -B
+  - sonar-scanner
+
 notifications:
   email: 
     on_success: never # default: change
