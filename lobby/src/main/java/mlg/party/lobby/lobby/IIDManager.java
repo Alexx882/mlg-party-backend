@@ -1,4 +1,5 @@
 package mlg.party.lobby.lobby;
 
-public class IIDManager {
+public interface IIDManager {
+    String nextId();
 }

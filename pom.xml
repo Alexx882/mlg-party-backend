@@ -11,6 +11,7 @@
     <modules>
         <module>leaderboard</module>
         <module>rock-paper-scissors</module>
+        <module>lobby</module>
     </modules>
 
     <properties>

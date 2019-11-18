@@ -18,6 +18,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
+    <properties>
+        <java.version>13</java.version>
+    </properties>
+
     <build>
         <plugins>
             <plugin>
