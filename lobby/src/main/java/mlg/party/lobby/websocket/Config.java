@@ -1,6 +1,6 @@
 package mlg.party.lobby.websocket;
 
-import mlg.party.lobby.lobby.IIDManager;
+import mlg.party.lobby.lobby.id.IIDManager;
 import mlg.party.lobby.lobby.ILobbyService;
 import mlg.party.lobby.logging.ILogger;
 import org.springframework.context.annotation.Configuration;

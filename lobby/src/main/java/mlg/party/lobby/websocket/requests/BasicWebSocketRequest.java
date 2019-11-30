@@ -1,9 +1,9 @@
 package mlg.party.lobby.websocket.requests;
 
-public abstract class AbstractWebsocketRequest {
+public class BasicWebSocketRequest {
     private final String type;
 
-    AbstractWebsocketRequest(String type) {
+    BasicWebSocketRequest(String type) {
         this.type = type;
     }
 
