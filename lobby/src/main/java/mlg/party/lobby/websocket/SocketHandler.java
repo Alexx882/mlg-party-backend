@@ -74,7 +74,7 @@ public class SocketHandler extends TextWebSocketHandler {
         for (Player p : participants) {
             for (WebSocketSession s : sessionIds.keySet()) {
                 if (sessionIds.get(s) == p)
-                    session.sendMessage(new TextMessage(gson.toJson(response2)));
+                    s.sendMessage(new TextMessage(gson.toJson(response2)));
             }
         }
     }
