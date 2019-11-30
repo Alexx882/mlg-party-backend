@@ -1,15 +1,13 @@
 package mlg.party.lobby.websocket;
 
 import mlg.party.lobby.logging.ConsoleLogger;
-import mlg.party.lobby.websocket.requests.AbstractWebsocketRequest;
+import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -29,7 +27,7 @@ public class ParserTest {
     @Test
     public void testProperlyFormattedCreateLobbyRequest() {
         String properlyFormattedCreateLobbyRequest = "{\"type\":\"CreateLobby\",\"playerName\":\"Franz\"}";
-        AbstractWebsocketRequest request = parser.parseMessage(properlyFormattedCreateLobbyRequest);
+        BasicWebSocketRequest request = parser.parseMessage(properlyFormattedCreateLobbyRequest);
 
         assert request instanceof CreateLobbyRequest;
     }

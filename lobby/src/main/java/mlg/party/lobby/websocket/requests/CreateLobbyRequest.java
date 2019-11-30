@@ -1,13 +1,13 @@
 package mlg.party.lobby.websocket.requests;
 
 /**
- * {"type":"CreateLobby","playerName":"Lerchner"}
+ * {"type":"CreateLobby","playerName":"Lercher"}
  */
-public class CreateLobbyRequest extends AbstractWebsocketRequest {
+public class CreateLobbyRequest extends BasicWebSocketRequest {
     private final String playerName;
 
-    public CreateLobbyRequest(String type, String playerName) {
-        super(type);
+    public CreateLobbyRequest(String playerName) {
+        super("CreateLobby");
         this.playerName = playerName;
     }
 

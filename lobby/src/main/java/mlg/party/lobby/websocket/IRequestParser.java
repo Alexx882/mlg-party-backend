@@ -1,7 +1,7 @@
 package mlg.party.lobby.websocket;
 
-import mlg.party.lobby.websocket.requests.AbstractWebsocketRequest;
+import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 
 public interface IRequestParser {
-    AbstractWebsocketRequest parseMessage(String json);
+    BasicWebSocketRequest parseMessage(String json);
 }
