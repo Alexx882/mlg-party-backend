@@ -3,10 +3,10 @@ package mlg.party.lobby.websocket.responses;
 public class StartGameResponse  {
     private String type = "StartGame";
     private int status;
-//    private Minigame game;
+    private String gameName;
 
-//    public StartGameResponse(int status, Minigame game) {
-//        this.status = status;
-////        this.game = game;
-//    }
+    public StartGameResponse(int status, String gameName) {
+        this.status = status;
+        this.gameName = gameName;
+    }
 }
