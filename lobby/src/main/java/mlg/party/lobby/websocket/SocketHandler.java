@@ -18,6 +18,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -71,12 +72,26 @@ public class SocketHandler extends TextWebSocketHandler {
         List<Player> participants = lobbyService.getPlayersForLobby(request.getLobbyName());
         PlayerListResponse response2 = new PlayerListResponse(participants.stream().map(Player::getName).collect(Collectors.toList()));
 
+        // todo use getPlayerWithSession
         for (Player p : participants) {
             for (WebSocketSession s : sessionIds.keySet()) {
                 if (sessionIds.get(s) == p)
                     s.sendMessage(new TextMessage(gson.toJson(response2)));
             }
         }
+    }
+
+    public HashMap<Player, WebSocketSession> getPlayerWithSession(List<Player> players, List<WebSocketSession> sessions){
+        HashMap<Player, WebSocketSession> playersWithSession = new HashMap<Player, WebSocketSession>();
+
+        for (Player p : players) {
+            for (WebSocketSession s : sessions) {
+                if (sessionIds.get(s) == p)
+                    playersWithSession.put(p, s);
+            }
+        }
+
+        return playersWithSession;
     }
 
     /**
