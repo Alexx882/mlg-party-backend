@@ -1,4 +1,4 @@
-package mlg.party.lobby.game;
+package mlg.party.lobby.games;
 
 public class GameFinishedArgs {
 

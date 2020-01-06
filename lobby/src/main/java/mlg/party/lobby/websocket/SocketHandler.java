@@ -1,6 +1,7 @@
 package mlg.party.lobby.websocket;
 
 import com.google.gson.Gson;
+import mlg.party.lobby.games.GameManager;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.lobby.id.IIDManager;
 import mlg.party.lobby.lobby.ILobbyService;
@@ -8,9 +9,11 @@ import mlg.party.lobby.logging.ILogger;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
+import mlg.party.lobby.websocket.requests.StartGameRequest;
 import mlg.party.lobby.websocket.responses.JoinLobbyResponse;
 import mlg.party.lobby.websocket.responses.LobbyCreatedResponse;
 import mlg.party.lobby.websocket.responses.PlayerListResponse;
+import mlg.party.lobby.websocket.responses.StartGameResponse;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -18,8 +21,11 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -81,7 +87,44 @@ public class SocketHandler extends TextWebSocketHandler {
         }
     }
 
-    public HashMap<Player, WebSocketSession> getPlayerWithSession(List<Player> players, List<WebSocketSession> sessions){
+//    private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
+//        List<Player> players = null;
+//
+//        // check if lobby exists
+//        try {
+//            players = lobbyService.getPlayersForLobby(request.getLobbyName());
+//        } catch (IllegalArgumentException e) {
+//            sendMessage(session, new StartGameResponse(404, Minigame.None));
+//            return;
+//        }
+//
+//        try {
+//            Class<?> c = GameManager.getInstance().getNextGame();
+//            Constructor<?> ctor = c.getConstructor(c);
+//            Object object = ctor.newInstance(new Object[] { });
+//        } catch (NoSuchMethodException e) {
+//            e.printStackTrace();
+//        } catch (IllegalAccessException e) {
+//            e.printStackTrace();
+//        } catch (InstantiationException e) {
+//            e.printStackTrace();
+//        } catch (InvocationTargetException e) {
+//            e.printStackTrace();
+//        }
+//
+//        HashMap<Player, WebSocketSession> ps = getPlayerWithSession(players);
+//        StartGameResponse response = new StartGameResponse(200, Minigame.None);
+//
+//        for (Map.Entry<Player, WebSocketSession> entry : ps.entrySet()) {
+//            sendMessage(entry.getValue(), response);
+//        }
+//    }
+
+    private void sendMessage(WebSocketSession s, Object message) throws IOException {
+        s.sendMessage(new TextMessage(gson.toJson(message)));
+    }
+
+    public HashMap<Player, WebSocketSession> getPlayerWithSession(List<Player> players){
         HashMap<Player, WebSocketSession> playersWithSession = new HashMap<Player, WebSocketSession>();
 
         for (Player p : players) {
