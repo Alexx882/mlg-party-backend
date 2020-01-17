@@ -4,6 +4,10 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Factory for different games
+ * @param <T> A game class extending BasicGame
+ */
 public abstract class GameFactory<T extends BasicGame> {
     private static List<GameFactory<?>> factories = new LinkedList<>();
 
@@ -11,7 +15,7 @@ public abstract class GameFactory<T extends BasicGame> {
         factories.add(factory);
     }
 
-    public GameFactory<?> getRandomGameFactory() {
+    public static GameFactory<?> getRandomGameFactory() {
         Collections.shuffle(factories);
         return factories.get(0);
     }

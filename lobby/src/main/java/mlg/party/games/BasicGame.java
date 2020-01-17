@@ -25,6 +25,10 @@ public abstract class BasicGame {
         this.players = players;
     }
 
+    /**
+     * Sets the socket handler to use for messages received from endpoint getGameEndpoint().
+     * @param socketHandler
+     */
     public void setSocketHandler(GameWebSocketHandler<BasicGame> socketHandler) {
         this.socketHandler = socketHandler;
     }

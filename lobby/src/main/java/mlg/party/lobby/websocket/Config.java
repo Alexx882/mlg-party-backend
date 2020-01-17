@@ -1,6 +1,6 @@
 package mlg.party.lobby.websocket;
 
-import mlg.party.games.GameManager;
+import mlg.party.games.cocktail_shaker.CocktailShakerSocketHandler;
 import mlg.party.lobby.lobby.id.IIDManager;
 import mlg.party.lobby.lobby.ILobbyService;
 import mlg.party.lobby.logging.ILogger;
@@ -13,15 +13,13 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class Config implements WebSocketConfigurer {
 
-    public Config(GameManager gameManager, IRequestParser parser, ILogger logger, ILobbyService lobbyService, IIDManager iidManager) {
-        this.gameManager = gameManager;
+    public Config(IRequestParser parser, ILogger logger, ILobbyService lobbyService, IIDManager iidManager) {
         this.parser = parser;
         this.logger = logger;
         this.lobbyService = lobbyService;
         this.idManager = iidManager;
     }
 
-    private final GameManager gameManager;
     private final IRequestParser parser;
     private final ILogger logger;
     private final ILobbyService lobbyService;
@@ -33,6 +31,7 @@ public class Config implements WebSocketConfigurer {
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new SocketHandler(logger, parser, lobbyService, idManager, gameManager), "/ws").setAllowedOrigins("*");
+        registry.addHandler(new SocketHandler(logger, parser, lobbyService, idManager), "/ws").setAllowedOrigins("*");
+        registry.addHandler(new CocktailShakerSocketHandler(), "/game/shaker").setAllowedOrigins("*");
     }
 }

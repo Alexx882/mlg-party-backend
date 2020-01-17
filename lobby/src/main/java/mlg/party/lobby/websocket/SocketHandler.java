@@ -2,7 +2,7 @@ package mlg.party.lobby.websocket;
 
 import com.google.gson.Gson;
 import mlg.party.games.BasicGame;
-import mlg.party.games.GameManager;
+import mlg.party.games.GameFactory;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.lobby.id.IIDManager;
 import mlg.party.lobby.lobby.ILobbyService;
@@ -31,12 +31,11 @@ import java.util.stream.Collectors;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    public SocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager, GameManager gameManager) {
+    public SocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
         this.logger = logger;
         this.parser = parser;
         this.lobbyService = lobbyService;
         this.idManager = idManager;
-        this.gameManager = gameManager;
     }
 
     private static final Gson gson = new Gson();
@@ -44,7 +43,6 @@ public class SocketHandler extends TextWebSocketHandler {
     private final IRequestParser parser;
     private final ILobbyService lobbyService;
     private final IIDManager idManager;
-    private final GameManager gameManager;
 
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private ConcurrentHashMap<WebSocketSession, Player> sessionIds = new ConcurrentHashMap<>();
@@ -97,7 +95,7 @@ public class SocketHandler extends TextWebSocketHandler {
             return;
         }
 
-        BasicGame game = gameManager.getNextGame();
+        BasicGame game = GameFactory.getRandomGameFactory().createGame();
         game.initialize(request.getLobbyName(), getPlayersWithSession(players));
         game.startGame();
     }

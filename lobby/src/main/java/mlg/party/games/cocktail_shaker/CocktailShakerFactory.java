@@ -22,7 +22,6 @@ public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> {
     @PostConstruct
     public void register() {
         registerFactory(this);
-        System.out.println("urlurlurl: " +url);
     }
 
     @Override
