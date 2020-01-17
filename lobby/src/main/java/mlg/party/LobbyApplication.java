@@ -1,4 +1,4 @@
-package mlg.party.lobby;
+package mlg.party;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

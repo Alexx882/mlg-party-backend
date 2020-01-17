@@ -1,17 +1,34 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.GameFactory;
+import mlg.party.lobby.logging.ILogger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-@Service
-public class CocktailShakerFactory implements GameFactory<CocktailShakerGame> {
+import javax.annotation.PostConstruct;
 
-    public CocktailShakerFactory() {
-        System.out.println("yololo i am a cocktail ... höhöhö ");
+@Service
+public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> {
+
+    @Value("${mlg.games.endpoints.shaker}")
+    private String url;
+
+    public CocktailShakerFactory(CocktailShakerSocketHandler handler) {
+        this.handler = handler;
+    }
+
+    private final CocktailShakerSocketHandler handler;
+
+    @PostConstruct
+    public void register() {
+        registerFactory(this);
+        System.out.println("urlurlurl: " +url);
     }
 
     @Override
     public CocktailShakerGame createGame() {
-        return new CocktailShakerGame();
+        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(url);
+        cocktailShakerGame.setSocketHandler(handler);
+        return cocktailShakerGame;
     }
 }

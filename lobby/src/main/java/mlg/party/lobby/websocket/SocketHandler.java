@@ -22,8 +22,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,21 +31,20 @@ import java.util.stream.Collectors;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    public SocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
-//        this.gameManager = gameManager;
+    public SocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager, GameManager gameManager) {
         this.logger = logger;
         this.parser = parser;
         this.lobbyService = lobbyService;
         this.idManager = idManager;
+        this.gameManager = gameManager;
     }
-
-//    private final GameManager gameManager;
 
     private static final Gson gson = new Gson();
     private final ILogger logger;
     private final IRequestParser parser;
     private final ILobbyService lobbyService;
     private final IIDManager idManager;
+    private final GameManager gameManager;
 
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private ConcurrentHashMap<WebSocketSession, Player> sessionIds = new ConcurrentHashMap<>();
@@ -91,7 +88,6 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
-
         List<Player> players = null;
         try {
             players = lobbyService.getPlayersForLobby(request.getLobbyName());
@@ -101,17 +97,8 @@ public class SocketHandler extends TextWebSocketHandler {
             return;
         }
 
-        BasicGame game = null;
-//        try {
-//            Class<? extends BasicGame> c = GameManager.getInstance().getNextGame();
-//            Constructor<? extends BasicGame> ctor = c.getConstructor(c);
-//            game = ctor.newInstance();
-//        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-//            e.printStackTrace();
-//            return;
-//        }
-
-        game.initialize(request.getLobbyName(), getPlayersWithSession(players), this);
+        BasicGame game = gameManager.getNextGame();
+        game.initialize(request.getLobbyName(), getPlayersWithSession(players));
         game.startGame();
     }
 
@@ -119,7 +106,7 @@ public class SocketHandler extends TextWebSocketHandler {
         s.sendMessage(new TextMessage(gson.toJson(message)));
     }
 
-    public HashMap<Player, WebSocketSession> getPlayersWithSession(List<Player> players){
+    public HashMap<Player, WebSocketSession> getPlayersWithSession(List<Player> players) {
         HashMap<Player, WebSocketSession> playersWithSession = new HashMap<Player, WebSocketSession>();
 
         for (Player p : players) {

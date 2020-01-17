@@ -3,10 +3,8 @@ package mlg.party.lobby.games;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.SocketHandler;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class GameParameters {
 

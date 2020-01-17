@@ -1,34 +1,29 @@
 package mlg.party.games.cocktail_shaker;
 
+import com.google.gson.Gson;
 import mlg.party.Callback;
 import mlg.party.games.BasicGame;
 import mlg.party.lobby.games.GameFinishedArgs;
-import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.responses.StartGameResponse;
-import org.springframework.web.socket.WebSocketSession;
-
-import java.io.IOException;
-import java.util.Map;
 
 public class CocktailShakerGame extends BasicGame {
+
+    private final String endpoint;
+    private final Gson gson = new Gson();
+
+    public CocktailShakerGame(String endpoint) {
+        this.endpoint = endpoint;
+    }
 
     @Override
     public void startGame() {
         // inform players
         StartGameResponse response = new StartGameResponse(200, getGameEndpoint());
-
-        for (Map.Entry<Player, WebSocketSession> entry : players.entrySet()) {
-            try {
-                socketHandler.sendMessage(entry.getValue(), response);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        socketHandler.sendMessageToPlayers(this, gson.toJson(response));
     }
 
     @Override
     public void registerResultCallback(Callback<GameFinishedArgs> callback) {
-
     }
 
     @Override
@@ -38,6 +33,6 @@ public class CocktailShakerGame extends BasicGame {
 
     @Override
     public String getGameEndpoint() {
-        return "/game/shaker";
+        return endpoint;
     }
 }

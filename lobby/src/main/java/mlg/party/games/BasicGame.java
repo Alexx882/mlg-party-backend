@@ -5,6 +5,7 @@ import mlg.party.lobby.games.GameFinishedArgs;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.SocketHandler;
 import org.springframework.web.socket.WebSocketSession;
+import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
 
@@ -12,17 +13,19 @@ import java.util.HashMap;
 public abstract class BasicGame {
     protected String lobbyId;
     protected HashMap<Player, WebSocketSession> players;
-    protected SocketHandler socketHandler;
+    protected GameWebSocketHandler<BasicGame> socketHandler;
 
     /**
      * Initializes the game with parameters.
      * @param lobbyId
      * @param players
-     * @param socketHandler
      */
-    public void initialize(String lobbyId, HashMap<Player, WebSocketSession> players, SocketHandler socketHandler) {
+    public void initialize(String lobbyId, HashMap<Player, WebSocketSession> players) {
         this.lobbyId = lobbyId;
         this.players = players;
+    }
+
+    public void setSocketHandler(GameWebSocketHandler<BasicGame> socketHandler) {
         this.socketHandler = socketHandler;
     }
 
