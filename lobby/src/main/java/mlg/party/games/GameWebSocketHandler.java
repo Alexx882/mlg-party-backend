@@ -40,9 +40,9 @@ public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebS
     }
 
     public void sendMessageToPlayers(T instance, String message) throws IOException {
-        for (Player p : instance.players.keySet()) {
-            sendMessageToPlayer(instance.players.get(p), message);
-        }
+//        for (Player p : instance.players.keySet()) {
+//            sendMessageToPlayer(instance.players.get(p), message);
+//        }
     }
 
     public void sendMessageToPlayer(WebSocketSession playerSession, String message) throws IOException {

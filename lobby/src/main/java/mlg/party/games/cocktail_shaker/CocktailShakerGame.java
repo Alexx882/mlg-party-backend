@@ -22,7 +22,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
         // inform players
         StartGameResponse response = new StartGameResponse(200, getGameEndpoint());
-        socketHandler.sendMessageToPlayers(this, gson.toJson(response));
+//        socketHandler.sendMessageToPlayers(this, gson.toJson(response));
 
     }
 
