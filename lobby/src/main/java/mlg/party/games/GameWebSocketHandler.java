@@ -33,11 +33,10 @@ public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebS
      */
     public void registerNewGameInstance(T instance) {
         // todo should be done all inside factory or all outside factory
-        instance.setSocketHandler(this);
         gameInstances.put(instance.lobbyId, instance);
     }
 
-    public void closeGameInstance(T instance) {
+    public void removeGameInstance(T instance) {
         gameInstances.remove(instance.lobbyId);
     }
 

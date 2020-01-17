@@ -74,5 +74,8 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
             GameFinishedArgs args = new GameFinishedArgs(lobbyId, best.playerId);
             gameFinishedCallback.callback(args);
         }
+
+        socketHandler.removeGameInstance(this);
+        // todo herold pass back to lobby
     }
 }
