@@ -7,7 +7,7 @@ import mlg.party.games.websocket.responses.GameFinishedResponse;
 import mlg.party.lobby.games.GameFinishedArgs;
 import mlg.party.lobby.websocket.responses.StartGameResponse;
 
-public class CocktailShakerGame extends BasicGame {
+public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
     private final String endpoint;
     private final Gson gson = new Gson();

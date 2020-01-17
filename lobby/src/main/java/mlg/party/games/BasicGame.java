@@ -9,14 +9,17 @@ import java.util.HashMap;
 
 /**
  * Contains information about the game like lobby and players and the game logic.
+ *
+ * @param <T> - generic Sockethandler which can communicate with the other players
  */
-public abstract class BasicGame {
+public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
     protected String lobbyId;
     protected HashMap<Player, WebSocketSession> players;
-    protected GameWebSocketHandler<? extends BasicGame> socketHandler;
+    protected T socketHandler;
 
     /**
      * Initializes the game with parameters.
+     *
      * @param lobbyId
      * @param players
      */
@@ -27,9 +30,10 @@ public abstract class BasicGame {
 
     /**
      * Sets the socket handler to use for messages received from endpoint getGameEndpoint().
+     *
      * @param socketHandler
      */
-    public void setSocketHandler(GameWebSocketHandler<? extends BasicGame> socketHandler) {
+    public void setSocketHandler(T socketHandler) {
         this.socketHandler = socketHandler;
     }
 
@@ -45,12 +49,14 @@ public abstract class BasicGame {
 
     /**
      * Returns the name of the game.
+     *
      * @return
      */
     public abstract String getGameName();
 
     /**
      * Returns the websocket endpoint of the game.
+     *
      * @return
      */
     public abstract String getGameEndpoint();
