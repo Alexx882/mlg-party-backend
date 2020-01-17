@@ -93,17 +93,17 @@ public class SocketHandler extends TextWebSocketHandler {
     }
 
     private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
-        List<Player> players = null;
 
-        // check if lobby exists
+        List<Player> players = null;
         try {
             players = lobbyService.getPlayersForLobby(request.getLobbyName());
         } catch (IllegalArgumentException e) {
+            // if lobby does not exist
             sendMessage(session, new StartGameResponse(404, ""));
             return;
         }
 
-        BasicGame game;
+        BasicGame game = null;
         try {
             Class<? extends BasicGame> c = GameManager.getInstance().getNextGame();
             Constructor<? extends BasicGame> ctor = c.getConstructor(c);
@@ -164,6 +164,8 @@ public class SocketHandler extends TextWebSocketHandler {
             handle(session, (JoinLobbyRequest) request);
         else if (request instanceof CreateLobbyRequest)
             handle(session, (CreateLobbyRequest) request);
+        else if (request instanceof StartGameRequest)
+            handle(session, (StartGameRequest) request);
         else
             logger.log(this, String.format("Handling a not better specified websocketmessage with type '%s'", request.getType()));
     }

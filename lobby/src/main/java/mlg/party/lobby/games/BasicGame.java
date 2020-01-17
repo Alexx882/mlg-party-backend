@@ -41,4 +41,10 @@ public abstract class BasicGame {
      */
     public abstract String getGameName();
 
+    /**
+     * Returns the websocket endpoint of the game.
+     * @return
+     */
+    public abstract String getGameEndpoint();
+
 }

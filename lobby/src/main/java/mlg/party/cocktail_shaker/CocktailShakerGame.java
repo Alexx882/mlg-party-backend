@@ -15,9 +15,8 @@ public class CocktailShakerGame extends BasicGame {
 
     @Override
     public void startGame() {
-
         // inform players
-        StartGameResponse response = new StartGameResponse(200, getGameName());
+        StartGameResponse response = new StartGameResponse(200, getGameEndpoint());
 
         for (Map.Entry<Player, WebSocketSession> entry : players.entrySet()) {
             try {
@@ -26,8 +25,6 @@ public class CocktailShakerGame extends BasicGame {
                 e.printStackTrace();
             }
         }
-
-
     }
 
     @Override
@@ -38,5 +35,10 @@ public class CocktailShakerGame extends BasicGame {
     @Override
     public String getGameName() {
         return "CocktailShaker";
+    }
+
+    @Override
+    public String getGameEndpoint() {
+        return "/game/shaker";
     }
 }
