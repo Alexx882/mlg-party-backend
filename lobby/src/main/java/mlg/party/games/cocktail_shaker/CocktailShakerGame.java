@@ -14,6 +14,7 @@ import java.util.List;
 
 public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
+    private Callback<GameFinishedArgs> gameFinishedCallback = null;
     private final String endpoint;
     private List<CocktailShakerResult> gameResults = new ArrayList<>(players.size());
 
@@ -36,7 +37,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
     @Override
     public void registerResultCallback(Callback<GameFinishedArgs> callback) {
-
+        gameFinishedCallback = callback;
     }
 
     @Override
@@ -54,17 +55,24 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
         if (gameResults.size() == players.size())
             manageGameFinished(gameResults);
-
-//
     }
 
     private void manageGameFinished(List<CocktailShakerResult> results) {
-// finished:
-//        GameFinishedResponse response = new GameFinishedResponse(playerId);
-//        try {
-//            socketHandler.sendMessageToPlayers(this, response);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+        CocktailShakerResult best = results.get(0);
+        for (CocktailShakerResult cur : results)
+            if (best.avg < cur.avg)
+                best = cur;
+
+        try {
+            GameFinishedResponse response = new GameFinishedResponse(best.playerId);
+            socketHandler.sendMessageToPlayers(this, response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (gameFinishedCallback != null) {
+            GameFinishedArgs args = new GameFinishedArgs(lobbyId, best.playerId);
+            gameFinishedCallback.callback(args);
+        }
     }
 }
