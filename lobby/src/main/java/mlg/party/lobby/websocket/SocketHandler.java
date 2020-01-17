@@ -1,9 +1,8 @@
 package mlg.party.lobby.websocket;
 
 import com.google.gson.Gson;
-import mlg.party.lobby.games.BasicGame;
-import mlg.party.lobby.games.GameManager;
-import mlg.party.lobby.games.GameParameters;
+import mlg.party.games.BasicGame;
+import mlg.party.games.GameManager;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.lobby.id.IIDManager;
 import mlg.party.lobby.lobby.ILobbyService;
@@ -27,7 +26,6 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -35,15 +33,15 @@ import java.util.stream.Collectors;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    public SocketHandler(GameManager gameManager, ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
-        this.gameManager = gameManager;
+    public SocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
+//        this.gameManager = gameManager;
         this.logger = logger;
         this.parser = parser;
         this.lobbyService = lobbyService;
         this.idManager = idManager;
     }
 
-    private final GameManager gameManager;
+//    private final GameManager gameManager;
 
     private static final Gson gson = new Gson();
     private final ILogger logger;
@@ -104,14 +102,14 @@ public class SocketHandler extends TextWebSocketHandler {
         }
 
         BasicGame game = null;
-        try {
-            Class<? extends BasicGame> c = GameManager.getInstance().getNextGame();
-            Constructor<? extends BasicGame> ctor = c.getConstructor(c);
-            game = ctor.newInstance();
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-            return;
-        }
+//        try {
+//            Class<? extends BasicGame> c = GameManager.getInstance().getNextGame();
+//            Constructor<? extends BasicGame> ctor = c.getConstructor(c);
+//            game = ctor.newInstance();
+//        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+//            e.printStackTrace();
+//            return;
+//        }
 
         game.initialize(request.getLobbyName(), getPlayersWithSession(players), this);
         game.startGame();

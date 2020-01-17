@@ -1,9 +1,8 @@
-package mlg.party.cocktail_shaker;
+package mlg.party.games.cocktail_shaker;
 
 import mlg.party.Callback;
-import mlg.party.lobby.games.BasicGame;
+import mlg.party.games.BasicGame;
 import mlg.party.lobby.games.GameFinishedArgs;
-import mlg.party.lobby.games.GameParameters;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.responses.StartGameResponse;
 import org.springframework.web.socket.WebSocketSession;
