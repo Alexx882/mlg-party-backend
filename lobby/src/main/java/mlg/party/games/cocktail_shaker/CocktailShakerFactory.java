@@ -1,7 +1,6 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.GameFactory;
-import mlg.party.lobby.logging.ILogger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

@@ -3,9 +3,7 @@ package mlg.party.games;
 import mlg.party.Callback;
 import mlg.party.lobby.games.GameFinishedArgs;
 import mlg.party.lobby.lobby.Player;
-import mlg.party.lobby.websocket.SocketHandler;
 import org.springframework.web.socket.WebSocketSession;
-import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.HashMap;
 
@@ -13,7 +11,7 @@ import java.util.HashMap;
 public abstract class BasicGame {
     protected String lobbyId;
     protected HashMap<Player, WebSocketSession> players;
-    protected GameWebSocketHandler<BasicGame> socketHandler;
+    protected GameWebSocketHandler<? extends BasicGame> socketHandler;
 
     /**
      * Initializes the game with parameters.
@@ -29,7 +27,7 @@ public abstract class BasicGame {
      * Sets the socket handler to use for messages received from endpoint getGameEndpoint().
      * @param socketHandler
      */
-    public void setSocketHandler(GameWebSocketHandler<BasicGame> socketHandler) {
+    public void setSocketHandler(GameWebSocketHandler<? extends BasicGame> socketHandler) {
         this.socketHandler = socketHandler;
     }
 
