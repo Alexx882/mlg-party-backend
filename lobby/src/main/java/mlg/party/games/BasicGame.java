@@ -7,7 +7,9 @@ import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashMap;
 
-
+/**
+ * Contains information about the game like lobby and players and the game logic.
+ */
 public abstract class BasicGame {
     protected String lobbyId;
     protected HashMap<Player, WebSocketSession> players;

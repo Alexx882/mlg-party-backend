@@ -12,6 +12,11 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * Handles websocket messages for generic game instances.
+ * One handler instance manages all game instances for one game type.
+ * @param <T> The type of game to be managed.
+ */
 public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebSocketHandler {
     protected Map<String, T> gameInstances = new ConcurrentHashMap<>();
     private Map<Player, WebSocketSession> sessions = new ConcurrentHashMap<>();
