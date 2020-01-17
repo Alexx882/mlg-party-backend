@@ -7,6 +7,7 @@ import com.google.gson.JsonSyntaxException;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.websocket.IRequestParser;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
+import org.springframework.stereotype.Service;
 
 public class RequestParser implements IRequestParser {
 

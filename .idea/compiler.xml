@@ -11,9 +11,10 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="leaderboard" target="12" />
+      <module name="leaderboard" target="13" />
       <module name="lobby" target="12" />
       <module name="main" target="1.5" />
+      <module name="mlg-party-backend" target="1.5" />
       <module name="rock-paper-scissors" target="1.5" />
     </bytecodeTargetLevel>
   </component>
