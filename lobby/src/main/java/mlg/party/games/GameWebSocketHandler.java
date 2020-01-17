@@ -1,7 +1,10 @@
 package mlg.party.games;
 
 import com.google.gson.Gson;
+import mlg.party.games.websocket.requests.HelloGameRequest;
+import mlg.party.games.websocket.responses.HelloGameResponse;
 import mlg.party.lobby.lobby.Player;
+import mlg.party.lobby.logging.ILogger;
 import mlg.party.lobby.websocket.IRequestParser;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.web.socket.TextMessage;
@@ -18,9 +21,8 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> The type of game to be managed.
  */
-public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebSocketHandler {
+public abstract class GameWebSocketHandler<T extends BasicGame<?>> extends TextWebSocketHandler {
     protected Map<String, T> gameInstances = new ConcurrentHashMap<>();
-    private Map<Player, WebSocketSession> sessions = new ConcurrentHashMap<>();
     private final Gson gson = new Gson();
 
     /**
@@ -29,7 +31,6 @@ public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebS
      * @param instance - instance of the game
      */
     public void registerNewGameInstance(T instance) {
-        // todo should be done all inside factory or all outside factory
         gameInstances.put(instance.lobbyId, instance);
     }
 
@@ -52,26 +53,39 @@ public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebS
      *
      * @param session
      * @param request
+     * @return true, if the request was handled successfully
      */
-    protected abstract void handleRequest(WebSocketSession session, BasicWebSocketRequest request);
+    protected boolean handleRequest(WebSocketSession session, BasicWebSocketRequest request) throws IOException {
+        if (request instanceof HelloGameRequest) {
+            HelloGameRequest helloGameRequest = (HelloGameRequest) request;
+            getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
 
-    // todo spring stuff for this
+            if (gameInstances.containsKey(helloGameRequest.lobbyName) && gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session)) {
+                sendMessageToPlayer(session, new HelloGameResponse(200));
+            } else
+                sendMessageToPlayer(session, new HelloGameResponse(404));
+
+            return true;
+        }
+        return false;
+    }
 
     /**
-     * The parser to use for received messages.
-     *
-     * @return
+     * @return Parser to use for received messages.
      */
     protected abstract IRequestParser getMessageParser();
 
+    /**
+     * @return Main logger instance
+     */
+    protected abstract ILogger getLogger();
+
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         try {
             handleRequest(session, getMessageParser().parseMessage(message.getPayload()));
         } catch (IllegalArgumentException e) {
-            // todo logging
-//            logger.error(this, String.format("Failed to derive a type for message: %s", message.getPayload()));
-            System.out.println(String.format("Failed to derive a type for message: %s", message.getPayload()));
+            getLogger().error(this, String.format("Failed to derive a type for message: %s", message.getPayload()));
         }
     }
 }

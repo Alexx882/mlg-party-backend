@@ -1,12 +1,11 @@
 package mlg.party.games.cocktail_shaker;
 
-import com.google.gson.Gson;
 import mlg.party.Callback;
 import mlg.party.games.BasicGame;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.games.websocket.responses.GameFinishedResponse;
 import mlg.party.lobby.games.GameFinishedArgs;
-import mlg.party.lobby.websocket.responses.StartGameResponse;
+import mlg.party.lobby.lobby.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,23 +15,16 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
     private Callback<GameFinishedArgs> gameFinishedCallback = null;
     private final String endpoint;
-    private List<CocktailShakerResult> gameResults = new ArrayList<>(players.size());
+    private List<CocktailShakerResult> gameResults = new ArrayList<>(playerConnections.size());
 
-    public CocktailShakerGame(String endpoint) {
+    public CocktailShakerGame(String lobbyId, List<Player> participants, String endpoint) {
+        super(lobbyId, participants);
         this.endpoint = endpoint;
     }
 
     @Override
     public void startGame() {
         socketHandler.registerNewGameInstance(this);
-
-        // inform players
-        StartGameResponse response = new StartGameResponse(200, getGameEndpoint());
-        try {
-            socketHandler.sendMessageToPlayers(this, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -53,7 +45,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
     public void handleNewResult(CocktailShakerResult result) {
         gameResults.add(result);
 
-        if (gameResults.size() == players.size())
+        if (gameResults.size() == playerConnections.size())
             manageGameFinished(gameResults);
     }
 

@@ -6,6 +6,7 @@ import mlg.party.lobby.lobby.Player;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Contains information about the game like lobby and players and the game logic.
@@ -13,19 +14,38 @@ import java.util.HashMap;
  * @param <T> - generic Sockethandler which can communicate with the other players
  */
 public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
-    protected String lobbyId;
-    protected HashMap<Player, WebSocketSession> players;
+    protected final String lobbyId;
+    protected final List<Player> players;
+    protected HashMap<Player, WebSocketSession> playerConnections;
     protected T socketHandler;
 
-    /**
-     * Initializes the game with parameters.
-     *
-     * @param lobbyId
-     * @param players
-     */
-    public void initialize(String lobbyId, HashMap<Player, WebSocketSession> players) {
+    public BasicGame(String lobbyId, List<Player> players) {
         this.lobbyId = lobbyId;
         this.players = players;
+
+        playerConnections = new HashMap<>();
+    }
+
+    public boolean identifyPlayer(String playerId, WebSocketSession session) {
+        for(Player p : players) {
+            if(p.getId().equals(playerId)) {
+                playerConnections.put(p, session);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return true, iff every player identified himself to the server
+     */
+    public boolean isReadyToPlay() {
+        for (Player player : players)
+            if (!playerConnections.containsKey(player))
+                return false;
+
+        return true;
     }
 
     /**
@@ -37,8 +57,8 @@ public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
         this.socketHandler = socketHandler;
     }
 
-    public HashMap<Player, WebSocketSession> getPlayersWithSessions(){
-        return players;
+    public HashMap<Player, WebSocketSession> getPlayersWithSessions() {
+        return playerConnections;
     }
 
     /**

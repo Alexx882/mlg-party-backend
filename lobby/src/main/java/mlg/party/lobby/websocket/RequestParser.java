@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import mlg.party.lobby.logging.ILogger;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
@@ -15,11 +14,6 @@ import org.springframework.stereotype.Service;
 public class RequestParser implements IRequestParser {
 
     private static final Gson gson = new Gson();
-    private final ILogger logger;
-
-    public RequestParser(ILogger logger) {
-        this.logger = logger;
-    }
 
     @Override
     public BasicWebSocketRequest parseMessage(String json) {
@@ -27,7 +21,7 @@ public class RequestParser implements IRequestParser {
 
         try {
             jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        } catch (JsonSyntaxException e) {
+        } catch (JsonSyntaxException | IllegalStateException e) {
             throw new IllegalArgumentException("Passed String is not in JSON format!");
         }
 

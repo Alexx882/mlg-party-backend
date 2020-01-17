@@ -1,6 +1,7 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.GameFactory;
+import mlg.party.lobby.lobby.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Service;
@@ -9,6 +10,8 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 import javax.annotation.PostConstruct;
+import java.util.List;
+import java.util.Set;
 
 @Service
 @Configuration
@@ -33,8 +36,8 @@ public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> imple
     }
 
     @Override
-    public CocktailShakerGame createGame() {
-        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(host+url);
+    public CocktailShakerGame createGame(String lobbyId, List<Player> players) {
+        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(lobbyId, players, url);
         cocktailShakerGame.setSocketHandler(handler);
         return cocktailShakerGame;
     }

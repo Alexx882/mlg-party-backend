@@ -22,7 +22,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -59,7 +58,6 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         logger.log(this, String.format("Created new Lobby for Player(%s, %s): Lobby(%s)", requester.getId(), requester.getName(), lobbyId));
     }
 
-
     private void handle(WebSocketSession session, JoinLobbyRequest request) throws IOException {
         logger.log(this, String.format("Player(%s) wants to join Lobby(%s)", request.getPlayerName(), request.getLobbyName()));
 
@@ -76,15 +74,36 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         List<Player> participants = lobbyService.getPlayersForLobby(request.getLobbyName());
         PlayerListResponse response2 = new PlayerListResponse(participants.stream().map(Player::getName).collect(Collectors.toList()));
 
-        // todo use getPlayerWithSession
-        for (Player p : participants) {
+        sendMessageToPlayers(participants, gson.toJson(response2));
+    }
+
+    /**
+     * sends a message to a selection of players
+     *
+     * @param players - recievers of the message
+     * @param message - string to be sent
+     * @throws IOException - unecpected closing of the WebSocket, no connection, etc
+     */
+    private void sendMessageToPlayers(List<Player> players, String message) throws IOException {
+        for (Player p : players) {
             for (WebSocketSession s : sessionIds.keySet()) {
                 if (sessionIds.get(s) == p)
-                    s.sendMessage(new TextMessage(gson.toJson(response2)));
+                    s.sendMessage(new TextMessage(message));
             }
         }
     }
 
+    /**
+     * called when a new game starts.
+     * 1. Creates a new game instance from the GameFactory
+     * 2. Registers the game at its socket Handler
+     * 3. Informs the players in the same lobby as the requester about the new game
+     * 4. Deletes lobby information from this handler as the game's SocketHandler is in charge of the lobby
+     *
+     * @param session - connection of the requester
+     * @param request - request to handle
+     * @throws IOException - unexpected closing of a session of one of the participants
+     */
     private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
         List<Player> players = null;
         try {
@@ -95,32 +114,24 @@ public class LobbySocketHandler extends TextWebSocketHandler {
             return;
         }
 
+        logger.log(this, String.format("lobby '%s' wants to start the game.", request.getLobbyName()));
+
         // 1. select a new random game from the register
-        BasicGame<?> game = GameFactory.getRandomGameFactory().createGame();
+        BasicGame<?> game = GameFactory.getRandomGameFactory().createGame(request.getLobbyName(), lobbyService.getPlayersForLobby(request.getLobbyName()));
 
         // 2. give the game information about participating players and their websocket
-        game.initialize(request.getLobbyName(), getPlayersWithSession(players));
         game.startGame();
 
-        // 3. clear lobby info as the lobby is now "owned" by the GameSocketHandler
+        // 3. inform the players about the new game
+        StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
+        sendMessageToPlayers(lobbyService.getPlayersForLobby(request.getLobbyName()), gson.toJson(response));
+
+        // 4. clear lobby info as the lobby is now "owned" by the GameSocketHandler
         lobbyService.closeLobby(request.getLobbyName());
     }
 
     public void sendMessage(WebSocketSession s, Object message) throws IOException {
         s.sendMessage(new TextMessage(gson.toJson(message)));
-    }
-
-    public HashMap<Player, WebSocketSession> getPlayersWithSession(List<Player> players) {
-        HashMap<Player, WebSocketSession> playersWithSession = new HashMap<Player, WebSocketSession>();
-
-        for (Player p : players) {
-            for (WebSocketSession s : sessions) {
-                if (sessionIds.get(s) == p)
-                    playersWithSession.put(p, s);
-            }
-        }
-
-        return playersWithSession;
     }
 
     /**

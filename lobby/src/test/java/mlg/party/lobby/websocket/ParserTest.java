@@ -17,7 +17,7 @@ public class ParserTest {
     static class TestConfig {
         @Bean
         public IRequestParser requestParser() {
-            return new RequestParser(new ConsoleLogger());
+            return new RequestParser();
         }
     }
 
