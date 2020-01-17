@@ -29,9 +29,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @Component
-public class SocketHandler extends TextWebSocketHandler {
+public class LobbySocketHandler extends TextWebSocketHandler {
 
-    public SocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
+    public LobbySocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
         this.logger = logger;
         this.parser = parser;
         this.lobbyService = lobbyService;
@@ -95,9 +95,15 @@ public class SocketHandler extends TextWebSocketHandler {
             return;
         }
 
-        BasicGame game = GameFactory.getRandomGameFactory().createGame();
+        // 1. select a new random game from the register
+        BasicGame<?> game = GameFactory.getRandomGameFactory().createGame();
+
+        // 2. give the game information about participating players and their websocket
         game.initialize(request.getLobbyName(), getPlayersWithSession(players));
         game.startGame();
+
+        // 3. clear lobby info as the lobby is now "owned" by the GameSocketHandler
+        lobbyService.closeLobby(request.getLobbyName());
     }
 
     public void sendMessage(WebSocketSession s, Object message) throws IOException {
@@ -132,7 +138,6 @@ public class SocketHandler extends TextWebSocketHandler {
         } catch (IllegalArgumentException e) {
             logger.error(this, String.format("Failed to derive a type for message: %s", message.getPayload()));
         }
-
     }
 
     /**

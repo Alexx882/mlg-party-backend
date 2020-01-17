@@ -31,7 +31,7 @@ public class Config implements WebSocketConfigurer {
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new SocketHandler(logger, parser, lobbyService, idManager), "/ws").setAllowedOrigins("*");
+        registry.addHandler(new LobbySocketHandler(logger, parser, lobbyService, idManager), "/ws").setAllowedOrigins("*");
         registry.addHandler(new CocktailShakerSocketHandler(), "/game/shaker").setAllowedOrigins("*");
     }
 }
