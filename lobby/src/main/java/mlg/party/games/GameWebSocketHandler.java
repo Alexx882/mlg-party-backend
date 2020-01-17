@@ -1,5 +1,6 @@
 package mlg.party.games;
 
+import com.google.gson.Gson;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.IRequestParser;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
@@ -20,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebSocketHandler {
     protected Map<String, T> gameInstances = new ConcurrentHashMap<>();
     private Map<Player, WebSocketSession> sessions = new ConcurrentHashMap<>();
+    private final Gson gson = new Gson();
 
     /**
      * Registers a new game in the handler where actions can be handled
@@ -36,14 +38,14 @@ public abstract class GameWebSocketHandler<T extends BasicGame> extends TextWebS
         gameInstances.remove(instance.lobbyId);
     }
 
-    public void sendMessageToPlayers(T instance, String message) throws IOException {
-//        for (Player p : instance.players.keySet()) {
-//            sendMessageToPlayer(instance.players.get(p), message);
-//        }
+    public void sendMessageToPlayers(T instance, Object message) throws IOException {
+        HashMap<Player, WebSocketSession> map = instance.getPlayersWithSessions();
+        for (Player p : map.keySet())
+            sendMessageToPlayer(map.get(p), message);
     }
 
-    public void sendMessageToPlayer(WebSocketSession playerSession, String message) throws IOException {
-        playerSession.sendMessage(new TextMessage(message));
+    public void sendMessageToPlayer(WebSocketSession playerSession, Object message) throws IOException {
+        playerSession.sendMessage(new TextMessage(gson.toJson(message)));
     }
 
     /**

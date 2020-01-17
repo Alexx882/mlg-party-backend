@@ -37,6 +37,10 @@ public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
         this.socketHandler = socketHandler;
     }
 
+    public HashMap<Player, WebSocketSession> getPlayersWithSessions(){
+        return players;
+    }
+
     /**
      * Starts the game.
      */
