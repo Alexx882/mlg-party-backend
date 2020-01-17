@@ -14,7 +14,7 @@ public class CocktailShakerSocketHandler extends GameWebSocketHandler<CocktailSh
     @Override
     protected void handleRequest(WebSocketSession session, BasicWebSocketRequest request) {
         if (request instanceof CocktailShakerResult)
-            handleRequest(session, (CocktailShakerResult)request);
+            handleRequest(session, (CocktailShakerResult) request);
         else
             System.out.println("Did not handle message");
     }

@@ -4,15 +4,12 @@ import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.IRequestParser;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
-import java.net.http.WebSocket;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Handles websocket messages for generic game instances.
