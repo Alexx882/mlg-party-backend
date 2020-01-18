@@ -3,8 +3,8 @@ package mlg.party.lobby.websocket.requests;
 public class StartGameRequest extends BasicWebSocketRequest {
     private String lobbyName;
 
-    StartGameRequest(String type, String lobbyName) {
-        super(type);
+    public StartGameRequest(String lobbyName) {
+        super("StartGame");
         this.lobbyName = lobbyName;
     }
 

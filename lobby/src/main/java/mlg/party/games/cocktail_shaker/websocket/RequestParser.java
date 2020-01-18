@@ -9,6 +9,7 @@ import mlg.party.lobby.websocket.IRequestParser;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.stereotype.Service;
 
+@Service(value = "CocktailShakerRequestParser")
 public class RequestParser implements IRequestParser {
 
     private static final Gson gson = new Gson();

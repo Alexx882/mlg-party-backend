@@ -8,8 +8,10 @@ import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
 import mlg.party.lobby.websocket.requests.StartGameRequest;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+@Primary
 @Service
 public class RequestParser implements IRequestParser {
 

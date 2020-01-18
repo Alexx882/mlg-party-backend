@@ -74,7 +74,12 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         List<Player> participants = lobbyService.getPlayersForLobby(request.getLobbyName());
         PlayerListResponse response2 = new PlayerListResponse(participants.stream().map(Player::getName).collect(Collectors.toList()));
 
-        sendMessageToPlayers(participants, gson.toJson(response2));
+        sendMessageToPlayers(
+                participants.stream().filter(
+                        (p) -> !p.getName().equals(request.getPlayerName())
+                ).collect(Collectors.toList()),
+                gson.toJson(response2)
+        );
     }
 
     /**
@@ -85,6 +90,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @throws IOException - unecpected closing of the WebSocket, no connection, etc
      */
     private void sendMessageToPlayers(List<Player> players, String message) throws IOException {
+        // fixme occasionally causes a ConcurrentModificationException
         for (Player p : players) {
             for (WebSocketSession s : sessionIds.keySet()) {
                 if (sessionIds.get(s) == p)
