@@ -1,4 +1,4 @@
-package mlg.party.lobby.games;
+package mlg.party.games;
 
 public class GameFinishedArgs {
     public String lobbyId;

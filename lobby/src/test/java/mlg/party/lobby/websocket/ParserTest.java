@@ -1,6 +1,6 @@
 package mlg.party.lobby.websocket;
 
-import mlg.party.lobby.logging.ConsoleLogger;
+import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class ParserTest {
     @TestConfiguration
     static class TestConfig {
         @Bean
-        public IRequestParser requestParser() {
+        public RequestParserBase requestParser() {
             return new RequestParser();
         }
     }

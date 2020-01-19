@@ -3,7 +3,7 @@ package mlg.party.games.cocktail_shaker;
 import mlg.party.games.GameWebSocketHandler;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.logging.ILogger;
-import mlg.party.lobby.websocket.IRequestParser;
+import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -14,10 +14,10 @@ import java.io.IOException;
 @Component
 public class CocktailShakerSocketHandler extends GameWebSocketHandler<CocktailShakerGame> {
 
-    private final IRequestParser requestParser;
+    private final RequestParserBase requestParser;
     private final ILogger logger;
 
-    public CocktailShakerSocketHandler(@Qualifier("CocktailShakerRequestParser") IRequestParser requestParser, ILogger logger) {
+    public CocktailShakerSocketHandler(@Qualifier("CocktailShakerRequestParser") RequestParserBase requestParser, ILogger logger) {
         this.requestParser = requestParser;
         this.logger = logger;
     }
@@ -38,7 +38,7 @@ public class CocktailShakerSocketHandler extends GameWebSocketHandler<CocktailSh
     }
 
     @Override
-    protected IRequestParser getMessageParser() {
+    protected RequestParserBase getMessageParser() {
         return requestParser;
     }
 
