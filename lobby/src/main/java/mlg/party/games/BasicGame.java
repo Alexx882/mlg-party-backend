@@ -26,11 +26,11 @@ public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
     }
 
     public boolean identifyPlayer(String playerId, WebSocketSession session) {
-//        if(playerId == null)
-//            throw new I
+        if (playerId == null)
+            throw new IllegalArgumentException();
 
-        for(Player p : players) {
-            if(p.getId().equals(playerId)) {
+        for (Player p : players) {
+            if (p.getId().equals(playerId) && !playerConnections.containsKey(p)) {
                 playerConnections.put(p, session);
                 return true;
             }

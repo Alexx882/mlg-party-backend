@@ -11,7 +11,7 @@ import org.junit.Test;
 import java.util.List;
 
 public class BasicGameTests {
-    private class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl>{
+    private class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl> {
 
         @Override
         protected RequestParserBase getMessageParser() {
@@ -24,7 +24,7 @@ public class BasicGameTests {
         }
     }
 
-    private class BasicGameImpl extends BasicGame<GameWebSocketHandlerImpl>{
+    private class BasicGameImpl extends BasicGame<GameWebSocketHandlerImpl> {
 
         public BasicGameImpl(String lobbyId, List<Player> players) {
             super(lobbyId, players);
@@ -54,54 +54,58 @@ public class BasicGameTests {
     BasicGame game;
 
     @Before
-    public void setup(){
+    public void setup() {
         game = new BasicGameImpl("123", GameTestsHelper.getThreeArbitraryPlayers());
     }
 
     @Test
-    public void isReadyToPlay_initial_false(){
+    public void isReadyToPlay_initial_false() {
         Assert.assertFalse(game.isReadyToPlay());
     }
 
-    @Test
-    public void identifyPlayer_nullId_false(){
+    @Test(expected = IllegalArgumentException.class)
+    public void identifyPlayer_nullId_illegalArgument() {
         game.identifyPlayer(null, null);
     }
 
     @Test
-    public void identifyPlayer_wrongId_false(){
+    public void identifyPlayer_wrongId_false() {
         Assert.assertFalse(game.identifyPlayer("Alex", null));
     }
 
     @Test
-    public void identifyPlayer_correctId_true(){
+    public void identifyPlayer_correctId_true() {
         Assert.assertTrue(game.identifyPlayer("1", null));
     }
 
     @Test
-    public void identifyPlayer_sameIdTwice_true(){
-        Assert.assertTrue(game.identifyPlayer("1", null));
-        Assert.assertTrue(game.identifyPlayer("1", null));
-    }
-
-    @Test
-    public void isReadyToPlay_sameIdThreeTimes_false(){
-        Assert.assertTrue(game.identifyPlayer("1", null));
-        Assert.assertTrue(game.identifyPlayer("1", null));
-        Assert.assertTrue(game.identifyPlayer("1", null));
-
-        Assert.assertFalse(game.isReadyToPlay());
-
-    }
-
-    @Test
-    public void isReadyToPlay_correctIdThreeTimes_false(){
+    public void identifyPlayer_correctIdTwice_trueTrue() {
         Assert.assertTrue(game.identifyPlayer("1", null));
         Assert.assertTrue(game.identifyPlayer("2", null));
-        Assert.assertTrue(game.identifyPlayer("3", null));
+    }
+
+    @Test
+    public void identifyPlayer_sameCorrectIdTwice_trueFalse() {
+        Assert.assertTrue(game.identifyPlayer("1", null));
+        Assert.assertFalse(game.identifyPlayer("1", null));
+    }
+
+    @Test
+    public void isReadyToPlay_sameCorrectIdThreeTimes_false() {
+        game.identifyPlayer("1", null);
+        game.identifyPlayer("1", null);
+        game.identifyPlayer("1", null);
+
+        Assert.assertFalse(game.isReadyToPlay());
+    }
+
+    @Test
+    public void isReadyToPlay_correctIdThreeTimes_true() {
+        game.identifyPlayer("1", null);
+        game.identifyPlayer("2", null);
+        game.identifyPlayer("3", null);
 
         Assert.assertTrue(game.isReadyToPlay());
-
     }
 
 }
