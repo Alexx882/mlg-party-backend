@@ -1,4 +1,4 @@
-package mlg.party.lobby.games;
+package mlg.party.games;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
@@ -6,7 +6,6 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 @ClientEndpoint

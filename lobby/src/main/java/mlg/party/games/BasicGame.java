@@ -1,7 +1,6 @@
 package mlg.party.games;
 
 import mlg.party.Callback;
-import mlg.party.lobby.games.GameFinishedArgs;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.web.socket.WebSocketSession;
 

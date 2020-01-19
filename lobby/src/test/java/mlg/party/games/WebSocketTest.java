@@ -1,4 +1,4 @@
-package mlg.party.lobby.games;
+package mlg.party.games;
 
 import com.google.gson.Gson;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
