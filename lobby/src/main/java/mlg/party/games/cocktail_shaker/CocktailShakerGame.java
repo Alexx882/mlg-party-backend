@@ -48,7 +48,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
 
         gameResults.add(result);
 
-        if (gameResults.size() == playerConnections.size())
+        if (gameResults.size() == players.size())
             manageGameFinished(gameResults);
     }
 

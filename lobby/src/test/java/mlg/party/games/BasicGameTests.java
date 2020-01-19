@@ -11,18 +11,7 @@ import org.junit.Test;
 import java.util.List;
 
 public class BasicGameTests {
-    private class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl> {
-
-        @Override
-        protected RequestParserBase getMessageParser() {
-            return null;
-        }
-
-        @Override
-        protected ILogger getLogger() {
-            return null;
-        }
-    }
+    private abstract class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl> { }
 
     private class BasicGameImpl extends BasicGame<GameWebSocketHandlerImpl> {
 
