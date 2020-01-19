@@ -4,7 +4,7 @@ import mlg.party.Callback;
 import mlg.party.games.BasicGame;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.games.websocket.responses.GameFinishedResponse;
-import mlg.party.lobby.games.GameFinishedArgs;
+import mlg.party.games.GameFinishedArgs;
 import mlg.party.lobby.lobby.Player;
 
 import java.io.IOException;
@@ -43,9 +43,12 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
     }
 
     public void handleNewResult(CocktailShakerResult result) {
+        if(result == null)
+            throw new IllegalArgumentException("result cannot be null");
+
         gameResults.add(result);
 
-        if (gameResults.size() == playerConnections.size())
+        if (gameResults.size() == players.size())
             manageGameFinished(gameResults);
     }
 

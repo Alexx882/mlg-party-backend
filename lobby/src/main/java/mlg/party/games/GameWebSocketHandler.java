@@ -5,7 +5,7 @@ import mlg.party.games.websocket.requests.HelloGameRequest;
 import mlg.party.games.websocket.responses.HelloGameResponse;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.logging.ILogger;
-import mlg.party.lobby.websocket.IRequestParser;
+import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -73,7 +73,7 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?>> extends TextW
     /**
      * @return Parser to use for received messages.
      */
-    protected abstract IRequestParser getMessageParser();
+    protected abstract RequestParserBase getMessageParser();
 
     /**
      * @return Main logger instance

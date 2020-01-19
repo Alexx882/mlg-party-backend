@@ -1,6 +1,7 @@
 package mlg.party.lobby.websocket;
 
 import com.google.gson.Gson;
+import mlg.party.RequestParserBase;
 import mlg.party.games.BasicGame;
 import mlg.party.games.GameFactory;
 import mlg.party.lobby.lobby.Player;
@@ -30,7 +31,7 @@ import java.util.stream.Collectors;
 @Component
 public class LobbySocketHandler extends TextWebSocketHandler {
 
-    public LobbySocketHandler(ILogger logger, IRequestParser parser, ILobbyService lobbyService, IIDManager idManager) {
+    public LobbySocketHandler(ILogger logger, RequestParserBase parser, ILobbyService lobbyService, IIDManager idManager) {
         this.logger = logger;
         this.parser = parser;
         this.lobbyService = lobbyService;
@@ -39,7 +40,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
     private static final Gson gson = new Gson();
     private final ILogger logger;
-    private final IRequestParser parser;
+    private final RequestParserBase parser;
     private final ILobbyService lobbyService;
     private final IIDManager idManager;
 

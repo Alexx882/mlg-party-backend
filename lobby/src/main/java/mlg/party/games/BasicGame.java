@@ -1,7 +1,6 @@
 package mlg.party.games;
 
 import mlg.party.Callback;
-import mlg.party.lobby.games.GameFinishedArgs;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -27,8 +26,11 @@ public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
     }
 
     public boolean identifyPlayer(String playerId, WebSocketSession session) {
-        for(Player p : players) {
-            if(p.getId().equals(playerId)) {
+        if (playerId == null)
+            throw new IllegalArgumentException();
+
+        for (Player p : players) {
+            if (p.getId().equals(playerId) && !playerConnections.containsKey(p)) {
                 playerConnections.put(p, session);
                 return true;
             }
