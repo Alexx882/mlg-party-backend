@@ -2,6 +2,7 @@ package mlg.party.lobby.lobby;
 
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.util.*;
 
 @Service
@@ -12,7 +13,7 @@ public class LobbyService implements ILobbyService {
 
     private Map<String, List<Player>> lobbies = new HashMap<>();
 
-    private final Random rng = new Random();
+    private final SecureRandom rng = new SecureRandom();
 
     /**
      * adds a new player to the passed lobby
@@ -36,9 +37,17 @@ public class LobbyService implements ILobbyService {
     @Override
     public List<Player> getPlayersForLobby(String lobbyId) {
         if (!lobbies.containsKey(lobbyId))
-            throw new IllegalArgumentException("Lobby with ID '%s' does not exist!");
+            throw new IllegalArgumentException(String.format("Lobby with ID '%s' does not exist!", lobbyId));
 
         return lobbies.get(lobbyId);
+    }
+
+    @Override
+    public void closeLobby(String lobbyId) {
+        if (!lobbies.containsKey(lobbyId))
+            throw new IllegalArgumentException(String.format("Lobby with ID '%s' does not exist!", lobbyId));
+
+        lobbies.remove(lobbyId);
     }
 
     /**

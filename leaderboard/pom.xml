@@ -43,6 +43,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
                     <release>13</release>
+                    <source>13</source>
+                    <target>13</target>
                 </configuration>
             </plugin>
         </plugins>

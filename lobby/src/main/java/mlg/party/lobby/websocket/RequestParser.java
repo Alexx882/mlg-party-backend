@@ -2,37 +2,24 @@ package mlg.party.lobby.websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import mlg.party.lobby.logging.ILogger;
+import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.CreateLobbyRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
+import mlg.party.lobby.websocket.requests.StartGameRequest;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
+@Primary
 @Service
-public class RequestParser implements IRequestParser {
+public class RequestParser extends RequestParserBase {
 
     private static final Gson gson = new Gson();
-    private final ILogger logger;
-
-    public RequestParser(ILogger logger) {
-        this.logger = logger;
-    }
 
     @Override
     public BasicWebSocketRequest parseMessage(String json) {
-        JsonObject jsonObject;
-
-        try {
-            jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        } catch (JsonSyntaxException e) {
-            throw new IllegalArgumentException("Passed String is not in JSON format!");
-        }
-
-        if (!jsonObject.has("type"))
-            throw new IllegalArgumentException("No message type is contained in the String!");
-
+        JsonObject jsonObject = super.getJsonWithTypeField(json);
         String type = jsonObject.get("type").getAsString();
 
         try {
@@ -40,12 +27,18 @@ public class RequestParser implements IRequestParser {
                 case "CreateLobby":
                     if (!jsonObject.has("playerName"))
                         throw new IllegalArgumentException("Missing fields");
-
                     return gson.fromJson(json, CreateLobbyRequest.class);
+
                 case "JoinLobby":
                     if (!jsonObject.has("lobbyName") || !jsonObject.has("playerName"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, JoinLobbyRequest.class);
+
+                case "StartGame":
+                    if (!jsonObject.has("lobbyName"))
+                        throw new IllegalArgumentException("Missing fields");
+                    return gson.fromJson(json, StartGameRequest.class);
+
                 default:
                     throw new IllegalArgumentException("Invalid message type: '" + type + "'");
             }
