@@ -26,6 +26,9 @@ public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
     }
 
     public boolean identifyPlayer(String playerId, WebSocketSession session) {
+//        if(playerId == null)
+//            throw new I
+
         for(Player p : players) {
             if(p.getId().equals(playerId)) {
                 playerConnections.put(p, session);

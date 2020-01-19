@@ -1,5 +1,6 @@
 package mlg.party.games.cocktail_shaker;
 
+import mlg.party.games.GameTestsHelper;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.lobby.Player;
 import org.junit.Assert;
@@ -16,18 +17,10 @@ public class CocktailShakerGameTests {
 
     @Before
     public void setup(){
-        game = new CocktailShakerGame("123", getThreeArbitraryPlayers(), "/test/");
+        game = new CocktailShakerGame("123", GameTestsHelper.getThreeArbitraryPlayers(), "/test/");
 
         handled = new AtomicBoolean(false);
         game.registerResultCallback((args) -> handled.set(true));
-    }
-
-    private List<Player> getThreeArbitraryPlayers() {
-        var participants = new ArrayList<Player>(3);
-        participants.add(new Player("1", "P1"));
-        participants.add(new Player("2", "P2"));
-        participants.add(new Player("3", "P3"));
-        return participants;
     }
 
     @Test(expected = IllegalArgumentException.class)
