@@ -43,6 +43,9 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
     }
 
     public void handleNewResult(CocktailShakerResult result) {
+        if(result == null)
+            throw new IllegalArgumentException("result cannot be null");
+
         gameResults.add(result);
 
         if (gameResults.size() == playerConnections.size())
