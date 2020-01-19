@@ -2,34 +2,21 @@ package mlg.party.games.cocktail_shaker.websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
-import mlg.party.lobby.websocket.IRequestParser;
+import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.stereotype.Service;
 
 @Service(value = "CocktailShakerRequestParser")
-public class RequestParser implements IRequestParser {
+public class RequestParser extends RequestParserBase {
 
     private static final Gson gson = new Gson();
 
     @Override
     public BasicWebSocketRequest parseMessage(String json) {
-        // todo extract
-        JsonObject jsonObject;
-
-        try {
-            jsonObject = JsonParser.parseString(json).getAsJsonObject();
-        } catch (JsonSyntaxException e) {
-            throw new IllegalArgumentException("Passed String is not in JSON format!");
-        }
-
-        if (!jsonObject.has("type"))
-            throw new IllegalArgumentException("No message type is contained in the String!");
-
+        JsonObject jsonObject = super.getJsonWithTypeField(json);
         String type = jsonObject.get("type").getAsString();
-
 
         try {
             switch (type) {
