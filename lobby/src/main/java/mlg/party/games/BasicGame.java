@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @param <T> - generic Sockethandler which can communicate with the other players
  */
-public abstract class BasicGame<G extends BasicGame, T extends GameWebSocketHandler<G>> {
+public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSocketHandler<G>> {
     protected final String lobbyId;
     protected final List<Player> players;
     protected HashMap<Player, WebSocketSession> playerConnections;
