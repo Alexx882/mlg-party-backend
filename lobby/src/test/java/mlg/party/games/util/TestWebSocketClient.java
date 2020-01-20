@@ -14,6 +14,8 @@ public class TestWebSocketClient {
     Session session;
 
     public final String name;
+    private String id;
+
     private Queue<String> replies = new LinkedList<>();
 
     public TestWebSocketClient(String name) {
@@ -58,5 +60,13 @@ public class TestWebSocketClient {
             throw new IllegalStateException(String.format("no reply to pop in Connection(%s)!", name));
 
         return replies.poll();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

@@ -51,9 +51,9 @@ public class RequestParserTests {
         Assert.assertTrue(req instanceof CocktailShakerResult);
 
         CocktailShakerResult r = (CocktailShakerResult) req;
-        Assert.assertEquals(playerId, r.playerId);
-        Assert.assertEquals(max, r.max, 0.001);
-        Assert.assertEquals(avg, r.avg, 0.001);
+        Assert.assertEquals(playerId, r.getPlayerId());
+        Assert.assertEquals(max, r.getMax(), 0.001);
+        Assert.assertEquals(avg, r.getAvg(), 0.001);
     }
 
 }

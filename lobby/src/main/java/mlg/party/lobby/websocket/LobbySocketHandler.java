@@ -186,7 +186,8 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
-        sendMessageToPlayers(participants, gson.toJson(response));
+        for (WebSocketSession connection : playerConnections.values())
+            connection.sendMessage(new TextMessage(gson.toJson(response)));
 
         // 4. close the websockets
         for (WebSocketSession session : playerConnections.values())
