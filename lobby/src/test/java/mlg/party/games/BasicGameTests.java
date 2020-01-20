@@ -13,7 +13,7 @@ import java.util.List;
 public class BasicGameTests {
     private abstract class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl> { }
 
-    private class BasicGameImpl extends BasicGame<GameWebSocketHandlerImpl> {
+    private class BasicGameImpl extends BasicGame<BasicGameImpl, GameWebSocketHandlerImpl> {
 
         public BasicGameImpl(String lobbyId, List<Player> players) {
             super(lobbyId, players);
@@ -25,7 +25,7 @@ public class BasicGameTests {
         }
 
         @Override
-        public void registerResultCallback(Callback<GameFinishedArgs> callback) {
+        public void registerGameFinishedCallback(Callback<GameFinishedArgs> callback) {
 
         }
 
