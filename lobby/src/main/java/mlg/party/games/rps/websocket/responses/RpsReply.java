@@ -1,11 +1,12 @@
 package mlg.party.games.rps.websocket.responses;
 
+import mlg.party.games.rps.RpsLogic;
 import mlg.party.games.rps.websocket.requests.RpsResult;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 
 public class RpsReply extends BasicWebSocketRequest {
 
-    public RpsReply(String lobbyId, RpsResult.Option player1, RpsResult.Option player2) {
+    public RpsReply(String lobbyId, RpsLogic.Option player1, RpsLogic.Option player2) {
         super("RpsResult");
         this.lobbyId = lobbyId;
         this.player1 = player1;
@@ -14,8 +15,8 @@ public class RpsReply extends BasicWebSocketRequest {
 
     public String lobbyId;
     public String playerId;
-    public RpsResult.Option player1;
-    public RpsResult.Option player2;
+    public RpsLogic.Option player1;
+    public RpsLogic.Option player2;
 
 
 }

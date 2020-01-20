@@ -1,10 +1,13 @@
 package mlg.party.games.rps.websocket.requests;
 
+import mlg.party.games.rps.RpsLogic;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
+
+import java.security.SecureRandom;
 
 public class RpsResult extends BasicWebSocketRequest {
 
-    public RpsResult(String lobbyId, String playerId, Option option) {
+    public RpsResult(String lobbyId, String playerId, RpsLogic.Option option) {
         super("RpsResult");
         this.lobbyId = lobbyId;
         this.playerId = playerId;
@@ -13,8 +16,7 @@ public class RpsResult extends BasicWebSocketRequest {
 
     public String lobbyId;
     public String playerId;
-    public enum Option {ROCK, PAPER, SCISSOR}
-    public Option option;
+    public RpsLogic.Option option;
 
 
 }
