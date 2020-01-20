@@ -5,7 +5,6 @@ import mlg.party.lobby.lobby.Player;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Factory for different games

@@ -6,6 +6,7 @@ import mlg.party.games.websocket.responses.HelloGameResponse;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.logging.ILogger;
 import mlg.party.RequestParserBase;
+import mlg.party.lobby.websocket.LobbySocketHandler;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -86,6 +87,15 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
             handleRequest(session, getMessageParser().parseMessage(message.getPayload()));
         } catch (IllegalArgumentException e) {
             getLogger().error(this, String.format("Failed to derive a type for message: %s", message.getPayload()));
+        }
+    }
+
+    public void redirectToNextGame(T instance, LobbySocketHandler handler) {
+        try {
+            handler.redirectToNewGame(instance.lobbyId, instance.playerConnections);
+        } catch (IOException e) {
+            // todo add smart catch for exception
+            getLogger().error(this, String.format("Forwarding to next game not possible in Lobby(%s) due to an IOException", instance.lobbyId));
         }
     }
 }

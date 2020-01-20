@@ -1,4 +1,4 @@
-package mlg.party.games;
+package mlg.party.games.util;
 
 import javax.websocket.ClientEndpoint;
 import javax.websocket.OnMessage;
@@ -7,6 +7,7 @@ import javax.websocket.Session;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 
 @ClientEndpoint
 public class TestWebSocketClient {
@@ -39,11 +40,23 @@ public class TestWebSocketClient {
         session.getBasicRemote().sendText(message);
     }
 
-    public void waitForResponse() {
-        while(replies.isEmpty());
+    public boolean hasReply() {
+        return !replies.isEmpty();
     }
 
-    public Queue<String> getReplies() {
-        return replies;
+    public Callable<Boolean> hasReplyCallable() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return hasReply();
+            }
+        };
+    }
+
+    public String popReply() {
+        if (replies.isEmpty())
+            throw new IllegalStateException(String.format("no reply to pop in Connection(%s)!", name));
+
+        return replies.poll();
     }
 }
