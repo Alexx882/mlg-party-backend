@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @param <T> A game class extending BasicGame
  */
-public abstract class GameFactory<T extends BasicGame<?>> {
+public abstract class GameFactory<T extends BasicGame<?, ?>> {
     private static List<GameFactory<?>> factories = new LinkedList<>();
 
     public void registerFactory(GameFactory<?> factory) {

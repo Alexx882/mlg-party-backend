@@ -1,9 +1,11 @@
 package mlg.party.games;
 
 import mlg.party.Callback;
+import mlg.party.games.websocket.responses.GameFinishedResponse;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -12,11 +14,12 @@ import java.util.List;
  *
  * @param <T> - generic Sockethandler which can communicate with the other players
  */
-public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
+public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSocketHandler<G>> {
     protected final String lobbyId;
     protected final List<Player> players;
     protected HashMap<Player, WebSocketSession> playerConnections;
     protected T socketHandler;
+    private Callback<GameFinishedArgs> gameFinishedCallback = null;
 
     public BasicGame(String lobbyId, List<Player> players) {
         this.lobbyId = lobbyId;
@@ -71,7 +74,28 @@ public abstract class BasicGame<T extends GameWebSocketHandler<?>> {
     /**
      * Registers a callback which gets called once the game is finished.
      */
-    public abstract void registerResultCallback(Callback<GameFinishedArgs> callback);
+    public void registerGameFinishedCallback(Callback<GameFinishedArgs> callback){
+        gameFinishedCallback = callback;
+    }
+
+    /**
+     * Notify connected players and raise the game finished callback.
+     * @param winnerId The playerId of the winner.
+     * @param game
+     */
+    public void notifyGameFinished(G game, String winnerId){
+        try {
+            GameFinishedResponse response = new GameFinishedResponse(winnerId);
+            socketHandler.sendMessageToPlayers(game, response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (gameFinishedCallback != null) {
+            GameFinishedArgs args = new GameFinishedArgs(lobbyId, winnerId);
+            gameFinishedCallback.callback(args);
+        }
+    }
 
     /**
      * Returns the name of the game.
