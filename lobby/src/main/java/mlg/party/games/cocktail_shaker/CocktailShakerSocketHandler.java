@@ -4,6 +4,7 @@ import mlg.party.games.GameWebSocketHandler;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.logging.ILogger;
 import mlg.party.RequestParserBase;
+import mlg.party.lobby.websocket.LobbySocketHandler;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
@@ -16,10 +17,12 @@ public class CocktailShakerSocketHandler extends GameWebSocketHandler<CocktailSh
 
     private final RequestParserBase requestParser;
     private final ILogger logger;
+    private final LobbySocketHandler lobbySocketHandler;
 
-    public CocktailShakerSocketHandler(@Qualifier("CocktailShakerRequestParser") RequestParserBase requestParser, ILogger logger) {
+    public CocktailShakerSocketHandler(@Qualifier("CocktailShakerRequestParser") RequestParserBase requestParser, ILogger logger, LobbySocketHandler lobbySocketHandler) {
         this.requestParser = requestParser;
         this.logger = logger;
+        this.lobbySocketHandler = lobbySocketHandler;
     }
 
     @Override
@@ -45,5 +48,9 @@ public class CocktailShakerSocketHandler extends GameWebSocketHandler<CocktailSh
     @Override
     protected ILogger getLogger() {
         return logger;
+    }
+
+    public void redirectToNextGame(CocktailShakerGame instance) {
+        super.redirectToNextGame(instance, lobbySocketHandler);
     }
 }

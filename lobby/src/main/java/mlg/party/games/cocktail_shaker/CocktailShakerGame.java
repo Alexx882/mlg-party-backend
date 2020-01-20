@@ -18,7 +18,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailSh
     }
 
     @Override
-    public void startGame(){
+    public void startGame() {
         socketHandler.registerNewGameInstance(this);
     }
 
@@ -51,7 +51,6 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailSh
         super.notifyGameFinished(this, best.playerId);
 
         socketHandler.removeGameInstance(this);
-
-        // todo herold pass back to lobby
+        socketHandler.redirectToNextGame(this);
     }
 }

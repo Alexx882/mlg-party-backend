@@ -23,7 +23,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
@@ -47,6 +49,13 @@ public class LobbySocketHandler extends TextWebSocketHandler {
     private List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     private ConcurrentHashMap<WebSocketSession, Player> sessionIds = new ConcurrentHashMap<>();
 
+    /**
+     * called when a new lobby got created
+     *
+     * @param session - the requesters websocket connection
+     * @param request - contains the lobby ID and playername
+     * @throws IOException - unexpectedly closing connection, etc.
+     */
     private void handle(WebSocketSession session, CreateLobbyRequest request) throws IOException {
         Player requester = sessionIds.get(session);
         requester.setName(request.getPlayerName());
@@ -59,6 +68,13 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         logger.log(this, String.format("Created new Lobby for Player(%s, %s): Lobby(%s)", requester.getId(), requester.getName(), lobbyId));
     }
 
+    /**
+     * callend when a player wants to join an existing lobby
+     *
+     * @param session - the requesters websocket connection
+     * @param request - contains the lobby ID and playername
+     * @throws IOException - unexpectedly closing connection, etc.
+     */
     private void handle(WebSocketSession session, JoinLobbyRequest request) throws IOException {
         logger.log(this, String.format("Player(%s) wants to join Lobby(%s)", request.getPlayerName(), request.getLobbyName()));
 
@@ -135,6 +151,46 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 4. clear lobby info as the lobby is now "owned" by the GameSocketHandler
         lobbyService.closeLobby(request.getLobbyName());
+
+        // 5. close websocket connections and remove them from the lists
+        List<WebSocketSession> toRemove = new LinkedList<>();
+        for (Player p : players) {
+            for (WebSocketSession s : sessionIds.keySet()) {
+                if (sessionIds.get(s) == p) {
+                    s.close(CloseStatus.NORMAL);
+                    toRemove.add(s);
+                }
+            }
+        }
+        for (WebSocketSession s : toRemove) {
+            sessions.remove(s);
+            sessionIds.remove(s);
+        }
+    }
+
+    /**
+     * called when a game has finished. it uses the existing connection to ANOTHER endpoint to tell the
+     * players what the next game is and where to connect
+     *
+     * @param lobbyId           - unique identifier for lobby
+     * @param playerConnections - maps participant to their websocket connection
+     */
+    public void redirectToNewGame(String lobbyId, Map<Player, WebSocketSession> playerConnections) throws IOException {
+        List<Player> participants = new LinkedList<>(playerConnections.keySet());
+
+        // 1. select a new random game from the register
+        BasicGame<?, ?> game = GameFactory.getRandomGameFactory().createGame(lobbyId, participants);
+
+        // 2. give the game information about participating players and their websocket
+        game.startGame();
+
+        // 3. inform the players about the new game
+        StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
+        sendMessageToPlayers(participants, gson.toJson(response));
+
+        // 4. close the websockets
+        for (WebSocketSession session : playerConnections.values())
+            session.close(CloseStatus.NORMAL);
     }
 
     public void sendMessage(WebSocketSession s, Object message) throws IOException {

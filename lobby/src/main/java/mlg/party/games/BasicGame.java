@@ -28,6 +28,13 @@ public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSock
         playerConnections = new HashMap<>();
     }
 
+    /**
+     * called when a player connects to the game endpoint for the first time revealing his information
+     *
+     * @param playerId - unique for every player
+     * @param session  - websocket connection of the player
+     * @return true iff the player has no connection stored on the lobby
+     */
     public boolean identifyPlayer(String playerId, WebSocketSession session) {
         if (playerId == null)
             throw new IllegalArgumentException();
@@ -43,7 +50,7 @@ public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSock
     }
 
     /**
-     * @return true, iff every player identified himself to the server
+     * @return true, iff every player identified himself on the server
      */
     public boolean isReadyToPlay() {
         for (Player player : players)
@@ -74,16 +81,17 @@ public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSock
     /**
      * Registers a callback which gets called once the game is finished.
      */
-    public void registerGameFinishedCallback(Callback<GameFinishedArgs> callback){
+    public void registerGameFinishedCallback(Callback<GameFinishedArgs> callback) {
         gameFinishedCallback = callback;
     }
 
     /**
      * Notify connected players and raise the game finished callback.
+     *
      * @param winnerId The playerId of the winner.
-     * @param game
+     * @param game     - game instance
      */
-    public void notifyGameFinished(G game, String winnerId){
+    public void notifyGameFinished(G game, String winnerId) {
         try {
             GameFinishedResponse response = new GameFinishedResponse(winnerId);
             socketHandler.sendMessageToPlayers(game, response);
@@ -98,16 +106,12 @@ public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSock
     }
 
     /**
-     * Returns the name of the game.
-     *
-     * @return
+     * @return the name of the game.
      */
     public abstract String getGameName();
 
     /**
-     * Returns the websocket endpoint of the game.
-     *
-     * @return
+     * @return the websocket endpoint of the game.
      */
     public abstract String getGameEndpoint();
 

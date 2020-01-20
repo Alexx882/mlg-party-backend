@@ -1,6 +1,7 @@
 package mlg.party.games.util;
 
 import com.google.gson.Gson;
+import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
 import mlg.party.lobby.websocket.responses.BasicWebSocketResponse;
@@ -13,13 +14,22 @@ import java.util.concurrent.TimeUnit;
 import static org.awaitility.Awaitility.await;
 
 public class GameExecutor {
-    public final TestWebSocketClient leader;
-    public final List<TestWebSocketClient> players;
+    public TestWebSocketClient leader;
+    public List<TestWebSocketClient> players;
     private final Gson gson = new Gson();
 
     private final int TIMEOUT_S = 1;
 
     public GameExecutor(TestWebSocketClient leader, List<TestWebSocketClient> players) {
+        this.leader = leader;
+        this.players = players;
+    }
+
+    public boolean isInitialized() {
+        return leader != null && players.size() > 0;
+    }
+
+    public void reset(TestWebSocketClient leader, List<TestWebSocketClient> players) {
         this.leader = leader;
         this.players = players;
     }
@@ -61,11 +71,24 @@ public class GameExecutor {
         return repliesPrime;
     }
 
-
     public String sendLeaderMessage(BasicWebSocketRequest request) throws IOException {
         leader.send(gson.toJson(request));
         await().atMost(TIMEOUT_S, TimeUnit.SECONDS).until(leader.hasReplyCallable());
         return leader.popReply();
+    }
+
+    public boolean isLeaderConnectionClosed() {
+        return !leader.session.isOpen();
+    }
+
+    public boolean isConnectionOfAllPlayersClosed() {
+        boolean allConnectionsClosed = true;
+
+        for (TestWebSocketClient player : players) {
+            allConnectionsClosed = allConnectionsClosed && !player.session.isOpen();
+        }
+
+        return allConnectionsClosed;
     }
 
 
