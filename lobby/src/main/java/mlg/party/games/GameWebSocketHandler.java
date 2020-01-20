@@ -21,7 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> The type of game to be managed.
  */
-public abstract class GameWebSocketHandler<T extends BasicGame<?>> extends TextWebSocketHandler {
+public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends TextWebSocketHandler {
     protected Map<String, T> gameInstances = new ConcurrentHashMap<>();
     private final Gson gson = new Gson();
 

@@ -1,46 +1,57 @@
 package mlg.party.games;
 
+import jdk.jshell.spi.ExecutionControl;
 import mlg.party.Callback;
 import mlg.party.RequestParserBase;
+import mlg.party.games.cocktail_shaker.CocktailShakerSocketHandler;
+import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
+import mlg.party.games.websocket.responses.GameFinishedResponse;
 import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.logging.ILogger;
+import org.apache.tomcat.jni.Error;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
+import java.io.IOException;
 import java.util.List;
 
 public class BasicGameTests {
-    private abstract class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl> { }
+    private abstract class GameWebSocketHandlerImpl extends GameWebSocketHandler<BasicGameImpl> {
+    }
 
-    private class BasicGameImpl extends BasicGame<GameWebSocketHandlerImpl> {
+    /**
+     * Dummy implementation of BasicGame for testing purposes.
+     */
+    private class BasicGameImpl extends BasicGame<BasicGameImpl, GameWebSocketHandlerImpl> {
 
-        public BasicGameImpl(String lobbyId, List<Player> players) {
+        private BasicGameImpl(String lobbyId, List<Player> players) {
             super(lobbyId, players);
         }
 
         @Override
         public void startGame() {
-
+            throw new RuntimeException("Not implemented for testing!");
         }
 
         @Override
-        public void registerResultCallback(Callback<GameFinishedArgs> callback) {
-
+        public void registerGameFinishedCallback(Callback<GameFinishedArgs> callback) {
+            throw new RuntimeException("Not implemented for testing!");
         }
 
         @Override
         public String getGameName() {
-            return null;
+            throw new RuntimeException("Not implemented for testing!");
         }
 
         @Override
         public String getGameEndpoint() {
-            return null;
+            throw new RuntimeException("Not implemented for testing!");
         }
     }
 
-    BasicGame game;
+    private BasicGameImpl game;
 
     @Before
     public void setup() {
@@ -97,4 +108,14 @@ public class BasicGameTests {
         Assert.assertTrue(game.isReadyToPlay());
     }
 
+
+    @Test
+    public void notifyGameFinished_sendingToSocketHandler() throws IOException {
+        GameWebSocketHandlerImpl handler = Mockito.mock(GameWebSocketHandlerImpl.class);
+        game.setSocketHandler(handler);
+
+        game.notifyGameFinished(game, "1");
+
+        Mockito.verify(handler).sendMessageToPlayers(game, new GameFinishedResponse("1"));
+    }
 }

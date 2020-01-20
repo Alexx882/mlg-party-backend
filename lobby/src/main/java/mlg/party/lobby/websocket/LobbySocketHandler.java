@@ -124,7 +124,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         logger.log(this, String.format("lobby '%s' wants to start the game.", request.getLobbyName()));
 
         // 1. select a new random game from the register
-        BasicGame<?> game = GameFactory.getRandomGameFactory().createGame(request.getLobbyName(), lobbyService.getPlayersForLobby(request.getLobbyName()));
+        BasicGame<?, ?> game = GameFactory.getRandomGameFactory().createGame(request.getLobbyName(), lobbyService.getPlayersForLobby(request.getLobbyName()));
 
         // 2. give the game information about participating players and their websocket
         game.startGame();

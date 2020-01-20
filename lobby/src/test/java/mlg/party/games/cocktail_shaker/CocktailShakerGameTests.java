@@ -1,6 +1,5 @@
 package mlg.party.games.cocktail_shaker;
 
-import mlg.party.games.GameFinishedArgs;
 import mlg.party.games.GameTestsHelper;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.games.websocket.responses.GameFinishedResponse;
@@ -11,7 +10,6 @@ import org.mockito.Mockito;
 
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class CocktailShakerGameTests {
     CocktailShakerGame game;
@@ -22,7 +20,7 @@ public class CocktailShakerGameTests {
         game = new CocktailShakerGame("123", GameTestsHelper.getThreeArbitraryPlayers(), "/test/");
 
         handled = new AtomicBoolean(false);
-        game.registerResultCallback((args) -> handled.set(true));
+        game.registerGameFinishedCallback((args) -> handled.set(true));
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -59,7 +57,7 @@ public class CocktailShakerGameTests {
     public void handleNewResult_threeResults_gameFinishedCallbackWithHighestAvg() {
         CocktailShakerSocketHandler handler = Mockito.mock(CocktailShakerSocketHandler.class);
         game.setSocketHandler(handler);
-        game.registerResultCallback((args) -> {
+        game.registerGameFinishedCallback((args) -> {
             handled.set(true);
 
             // highest avg wins
