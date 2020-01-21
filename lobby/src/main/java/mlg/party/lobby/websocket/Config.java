@@ -1,9 +1,10 @@
 package mlg.party.lobby.websocket;
 
-import mlg.party.lobby.games.GameManager;
+import mlg.party.RequestParserBase;
 import mlg.party.lobby.lobby.id.IIDManager;
 import mlg.party.lobby.lobby.ILobbyService;
 import mlg.party.lobby.logging.ILogger;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
@@ -13,26 +14,22 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 @EnableWebSocket
 public class Config implements WebSocketConfigurer {
 
-    public Config(GameManager gameManager, IRequestParser parser, ILogger logger, ILobbyService lobbyService, IIDManager iidManager) {
-        this.gameManager = gameManager;
-        this.parser = parser;
-        this.logger = logger;
-        this.lobbyService = lobbyService;
-        this.idManager = iidManager;
+    @Value("${mlg.games.endpoints.lobby}")
+    private String endpointLobby;
+
+    public Config(LobbySocketHandler lobbySocketHandler) {
+        this.lobbySocketHandler = lobbySocketHandler;
     }
 
-    private final GameManager gameManager;
-    private final IRequestParser parser;
-    private final ILogger logger;
-    private final ILobbyService lobbyService;
-    private final IIDManager idManager;
+    private final LobbySocketHandler lobbySocketHandler;
 
     /**
      * hosts a new endpoint for websockets at [URL]/ws and allows connections from all origins
+     *
      * @param registry
      */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new SocketHandler(gameManager, logger, parser, lobbyService, idManager), "/ws").setAllowedOrigins("*");
+        registry.addHandler(lobbySocketHandler, endpointLobby).setAllowedOrigins("*");
     }
 }

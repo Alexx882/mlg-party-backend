@@ -1,12 +1,12 @@
 package mlg.party.lobby.websocket.responses;
 
-public class StartGameResponse  {
-    private String type = "StartGame";
-    private int status;
-    private String gameName;
+public class StartGameResponse extends BasicWebSocketResponse {
+    public final int status;
+    public final String gameEndpoint;
 
-    public StartGameResponse(int status, String gameName) {
+    public StartGameResponse(int status, String gameEndpoint) {
+        super("StartGame");
         this.status = status;
-        this.gameName = gameName;
+        this.gameEndpoint = gameEndpoint;
     }
 }

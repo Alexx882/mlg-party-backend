@@ -5,11 +5,15 @@ package mlg.party.lobby.websocket.requests;
  */
 public class JoinLobbyRequest extends BasicWebSocketRequest {
     private final String lobbyName;
-    private final String playerName;
+    private String playerName;
 
     public JoinLobbyRequest(String lobbyName, String playerName) {
         super("JoinLobby");
         this.lobbyName = lobbyName;
+        this.playerName = playerName;
+    }
+
+    public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 

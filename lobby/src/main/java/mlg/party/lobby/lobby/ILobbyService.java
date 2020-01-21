@@ -20,4 +20,11 @@ public interface ILobbyService {
     boolean addPlayerToLobby(String lobbyId, Player player);
 
     List<Player> getPlayersForLobby(String lobbyId);
+
+    /**
+     * deletes the lobby information from the manager
+     *
+     * @param lobbyId - identifies a lobby uniquely
+     */
+    void closeLobby(String lobbyId);
 }
