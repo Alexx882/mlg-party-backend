@@ -19,6 +19,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.websocket.ContainerProvider;
@@ -29,11 +30,14 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WebSocketTest {
 
     private final String uri = "ws://localhost:%d/lobby";
@@ -253,6 +257,8 @@ public class WebSocketTest {
             for (String id : ids)
                 executor.assignId(id, position++);
             executor.leader.setId(lobbyCreatedResponse.playerId);
+
+            await().until(executor.leader.isOpen());
 
             // 8. identify yourself at the new service
             HelloGameRequest helloGameRequest = new HelloGameRequest(lobbyCreatedResponse.playerId, lobbyCreatedResponse.lobbyName);

@@ -3,12 +3,9 @@ package mlg.party.games.util;
 import com.google.gson.Gson;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.games.websocket.requests.HelloGameRequest;
-import mlg.party.lobby.lobby.Player;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
-import mlg.party.lobby.websocket.responses.BasicWebSocketResponse;
 
-import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.LinkedList;
@@ -22,7 +19,7 @@ public class GameExecutor {
     public List<TestWebSocketClient> players;
     private final Gson gson = new Gson();
 
-    private final int TIMEOUT_S = 2;
+    private final int TIMEOUT_S = 5;
     private final SecureRandom srng = new SecureRandom();
 
     public GameExecutor(TestWebSocketClient leader, List<TestWebSocketClient> players) {

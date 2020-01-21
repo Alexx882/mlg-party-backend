@@ -192,6 +192,8 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         // 4. close the websockets
         for (WebSocketSession session : playerConnections.values())
             session.close(CloseStatus.NORMAL);
+
+        playerConnections.clear();
     }
 
     public void sendMessage(WebSocketSession s, Object message) throws IOException {

@@ -22,6 +22,15 @@ public class TestWebSocketClient {
         this.name = name;
     }
 
+    public Callable<Boolean> isOpen() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return session != null && session.isOpen();
+            }
+        };
+    }
+
     @OnOpen
     public void onOpen(final Session session) {
         this.session = session;
