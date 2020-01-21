@@ -29,9 +29,7 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
-import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
@@ -178,6 +176,10 @@ public class WebSocketTest {
         LobbyCreatedResponse lobbyCreatedResponse = gson.fromJson(reply, LobbyCreatedResponse.class);
         assertEquals("CreateLobby", lobbyCreatedResponse.type);
 
+        final String leaderId = lobbyCreatedResponse.playerId;
+
+        System.out.println(String.format("LeaderId: %s", leaderId));
+
         // 2. let the players join the lobby
         JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyName, "");
         List<String> joinLobbyResponses = executor.sendPlayerMessage(joinLobbyRequest);
@@ -265,9 +267,15 @@ public class WebSocketTest {
             // 10. the players now submit their score to the server
             SecureRandom rng = new SecureRandom();
             float shakeResult = rng.nextFloat();
-            CocktailShakerResult cocktailShakerLeaderResult = new CocktailShakerResult(lobbyCreatedResponse.lobbyName, executor.leader.getId(), shakeResult + 1, shakeResult);
+            CocktailShakerResult cocktailShakerLeaderResult = new CocktailShakerResult(
+                    lobbyCreatedResponse.lobbyName,
+                    "", // will be overwritten in GameExecutor for Players
+                    shakeResult + 1,
+                    shakeResult
+            );
 
             executor.sendPlayerMessage(cocktailShakerLeaderResult, false);
+            cocktailShakerLeaderResult.setPlayerId(leaderId);
             String leaderGameFinishedResponseString = executor.sendLeaderMessage(cocktailShakerLeaderResult);
 
             GameFinishedResponse leaderGameFinishedResponse = gson.fromJson(leaderGameFinishedResponseString, GameFinishedResponse.class);
