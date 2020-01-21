@@ -1,7 +1,5 @@
 package mlg.party.games.rps;
 
-import mlg.party.games.rps.websocket.requests.RpsResult;
-import mlg.party.games.rps.websocket.responses.RpsReply;
 
 import java.security.SecureRandom;
 

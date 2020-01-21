@@ -7,11 +7,11 @@ import java.security.SecureRandom;
 
 public class RpsResult extends BasicWebSocketRequest {
 
-    public RpsResult(String lobbyId, String playerId, RpsLogic.Option option) {
+    public RpsResult(String lobbyId, String playerId, String option) {
         super("RpsResult");
         this.lobbyId = lobbyId;
         this.playerId = playerId;
-        this.option = option;
+        this.option = this.option.valueOf(option);
     }
 
     public String lobbyId;

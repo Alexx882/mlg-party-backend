@@ -17,19 +17,19 @@ import java.util.List;
 @Service
 @Configuration
 @EnableWebSocket
-public class RpsFactory extends GameFactory<CocktailShakerGame> implements WebSocketConfigurer {
+public class RpsFactory extends GameFactory<RpsGame> implements WebSocketConfigurer {
 
     @Value("${mlg.games.endpoints.base}")
     private String host;
 
-    @Value("${mlg.games.endpoints.shaker}")
+    @Value("${mlg.games.endpoints.rps}")
     private String url;
 
-    public RpsFactory(CocktailShakerSocketHandler handler) {
+    public RpsFactory(RpsSocketHandler handler) {
         this.handler = handler;
     }
 
-    private final CocktailShakerSocketHandler handler;
+    private final RpsSocketHandler handler;
 
     @PostConstruct
     public void register() {
@@ -37,10 +37,10 @@ public class RpsFactory extends GameFactory<CocktailShakerGame> implements WebSo
     }
 
     @Override
-    public CocktailShakerGame createGame(String lobbyId, List<Player> players) {
-        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(lobbyId, players, url);
-        cocktailShakerGame.setSocketHandler(handler);
-        return cocktailShakerGame;
+    public RpsGame createGame(String lobbyId, List<Player> players) {
+        RpsGame rpsGame = new RpsGame(lobbyId, players, url);
+        rpsGame.setSocketHandler(handler);
+        return rpsGame;
     }
 
     @Override
