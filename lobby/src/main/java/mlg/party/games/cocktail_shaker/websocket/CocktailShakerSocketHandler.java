@@ -1,6 +1,7 @@
-package mlg.party.games.cocktail_shaker;
+package mlg.party.games.cocktail_shaker.websocket;
 
 import mlg.party.games.GameWebSocketHandler;
+import mlg.party.games.cocktail_shaker.CocktailShakerGame;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.logging.ILogger;
 import mlg.party.RequestParserBase;

@@ -1,6 +1,7 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.GameTestsHelper;
+import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.games.websocket.responses.GameFinishedResponse;
 import org.junit.Assert;

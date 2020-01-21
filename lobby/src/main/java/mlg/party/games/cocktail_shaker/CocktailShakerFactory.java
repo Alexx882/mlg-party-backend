@@ -1,6 +1,7 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.GameFactory;
+import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,6 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 
 import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Set;
 
 @Service
 @Configuration

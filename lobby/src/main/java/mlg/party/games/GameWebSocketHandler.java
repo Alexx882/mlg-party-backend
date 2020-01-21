@@ -63,6 +63,7 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
             HelloGameRequest helloGameRequest = (HelloGameRequest) request;
 
             boolean contains = gameInstances.containsKey(helloGameRequest.lobbyName);
+            // todo exception if !contains
             boolean identify = gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session);
 
             getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));

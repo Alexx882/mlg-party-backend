@@ -1,6 +1,7 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.BasicGame;
+import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.lobby.Player;
 
