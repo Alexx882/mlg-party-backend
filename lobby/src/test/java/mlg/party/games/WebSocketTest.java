@@ -260,12 +260,14 @@ public class WebSocketTest {
 
             HelloGameResponse helloGameResponse = gson.fromJson(helloGameResponseString, HelloGameResponse.class);
             assertEquals("HelloGame", helloGameResponse.type);
+            assertEquals(200, helloGameResponse.status);
 
             List<String> HelloGameResponses = executor.sendPlayerMessage(helloGameRequest);
 
             for (String response : HelloGameResponses) {
                 HelloGameResponse helloGameResponsePrime = gson.fromJson(response, HelloGameResponse.class);
                 assertEquals("HelloGame", helloGameResponsePrime.type);
+                assertEquals(200, helloGameResponsePrime.status);
             }
 
             // 9. now everyone is playing the game and has a blast of a time!

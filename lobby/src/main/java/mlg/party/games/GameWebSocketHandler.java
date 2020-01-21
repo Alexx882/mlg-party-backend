@@ -61,9 +61,11 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
         if (request instanceof HelloGameRequest) {
             HelloGameRequest helloGameRequest = (HelloGameRequest) request;
             getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
+            getLogger().log(this, String.format("%s\n%s", gameInstances.containsKey(helloGameRequest.lobbyName), gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session)));
 
-            // todo  step into that bad boy
-            if (gameInstances.containsKey(helloGameRequest.lobbyName) && gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session)) {
+            if (gameInstances.containsKey(helloGameRequest.lobbyName) &&
+                    gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session)
+            ) {
                 sendMessageToPlayer(session, new HelloGameResponse(200));
             } else
                 sendMessageToPlayer(session, new HelloGameResponse(404));
