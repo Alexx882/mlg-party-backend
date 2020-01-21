@@ -1,22 +1,31 @@
-package at.aau.ase.mlg_party_app.tictactoe;
+package mlg.party.games.tictactoe;
 
 import com.google.gson.JsonSyntaxException;
 
+import mlg.party.lobby.lobby.Player;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 
-import at.aau.ase.mlg_party_app.tictactoe.TicTacToeLogic;
 
 public class TicTacToeLogicTest {
     private TicTacToeLogic gameLogic;
     private  int[][] testBoard;
+    private List<Player> players;
+    final String player1="Alex";
+    final String player2="Max";
 
 
     @Before
     public void before(){
-        gameLogic=new TicTacToeLogic();
+        players=new ArrayList<Player>(2);
+        players.add(new Player(player1,"WOW"));
+        players.add(new Player(player2,"notWOW"));
+        System.out.println(players.get(0));
+        gameLogic=new TicTacToeLogic(players);
         //Creating an empty board
         testBoard= new int[][]{
                 {0, 0, 0},
@@ -29,15 +38,14 @@ public class TicTacToeLogicTest {
     public void simpleInsertionTest(){
         int x=0;
         int y=1;
-        int playerId=1; // must be 1 (currentPlayer)
-        gameLogic.checkMoveStatus(x,y,playerId);
-        testBoard[x][y]=playerId;
+        gameLogic.newMoveAttempt(x,y,player1);
+        testBoard[x][y]=1;
         Assert.assertArrayEquals(gameLogic.getGameBoard(), testBoard);
     }
 
     @Test
     public void simpleInsertionReturnTest(){
-        Assert.assertEquals(200 , gameLogic.checkMoveStatus(0,2,1));
+        Assert.assertEquals(200 , gameLogic.newMoveAttempt(0,2,player1));
     }
 
     @Test
@@ -48,12 +56,12 @@ public class TicTacToeLogicTest {
                 {0, 0, 0}
         };
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(401,gameLogic.checkMoveStatus(0,2,1));
+        Assert.assertEquals(401,gameLogic.newMoveAttempt(0,2,player1));
     }
 
     @Test
     public void notCurrentPlayerTest(){
-        Assert.assertEquals(400,gameLogic.checkMoveStatus(0,0,2));
+        Assert.assertEquals(400,gameLogic.newMoveAttempt(0,0,player2));
     }
 
     @Test
@@ -64,7 +72,7 @@ public class TicTacToeLogicTest {
                 {0, 0, 0}
         };
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(400,gameLogic.checkMoveStatus(0,0,1));
+        Assert.assertEquals(400,gameLogic.newMoveAttempt(0,0,player2));
     }
     @Test
     public void winHorizontalTest(){
@@ -74,7 +82,7 @@ public class TicTacToeLogicTest {
                 {1, 1, 0}
         };
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(201,gameLogic.checkMoveStatus(2,2,1));
+        Assert.assertEquals(201,gameLogic.newMoveAttempt(2,2,player1));
     }
     @Test
     public void winVerticalTest(){
@@ -83,10 +91,10 @@ public class TicTacToeLogicTest {
                 {0, 0, 2},
                 {1, 0, 2}
         };
-        gameLogic.checkMoveStatus(1,1,1);//to shift current player to 2
+        gameLogic.newMoveAttempt(1,1,player1);//to shift current player to 2
         gameLogic.setGameBoard(testBoard);
 
-        Assert.assertEquals(201,gameLogic.checkMoveStatus(0,2,2));
+        Assert.assertEquals(201,gameLogic.newMoveAttempt(0,2,player2));
     }
     @Test
     public void winDiagonalToprightToBotleftTest(){
@@ -95,9 +103,9 @@ public class TicTacToeLogicTest {
                 {0, 0, 0},
                 {0, 0, 2}
         };
-        gameLogic.checkMoveStatus(1,1,1);//to shift current player to 2
+        gameLogic.newMoveAttempt(1,1,player1);//to shift current player to 2
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(201,gameLogic.checkMoveStatus(1,1,2));
+        Assert.assertEquals(201,gameLogic.newMoveAttempt(1,1,player2));
     }
     @Test
     public void winDiagonalTopleftToBotleftTest(){
@@ -107,7 +115,7 @@ public class TicTacToeLogicTest {
                 {0, 0, 0}
         };
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(201,gameLogic.checkMoveStatus(2,0,1));
+        Assert.assertEquals(201,gameLogic.newMoveAttempt(2,0,player1));
     }
     @Test
     public void drawP1Test(){
@@ -117,7 +125,7 @@ public class TicTacToeLogicTest {
                 {2, 1, 0}
         };
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(202,gameLogic.checkMoveStatus(2,2,1));
+        Assert.assertEquals(202,gameLogic.newMoveAttempt(2,2,player1));
     }
     @Test
     public void drawP2Test(){
@@ -127,8 +135,8 @@ public class TicTacToeLogicTest {
                 {1, 1, 2}
         };
         gameLogic.setGameBoard(testBoard);
-        gameLogic.checkMoveStatus(1,2,1);// To give turn to player 2
-        Assert.assertEquals(202,gameLogic.checkMoveStatus(0,1,2));
+        gameLogic.newMoveAttempt(1,2,player1);// To give turn to player 2
+        Assert.assertEquals(202,gameLogic.newMoveAttempt(0,1,player2));
     }
     @Test
     public void SetAndGetBoardTest(){
@@ -141,12 +149,17 @@ public class TicTacToeLogicTest {
         Assert.assertArrayEquals(testBoard,gameLogic.getGameBoard());
     }
     @Test
+    public void unknownPlayerTest(){
+        Assert.assertEquals(402,gameLogic.newMoveAttempt(1,2,"UNKNOWN"));
+    }
+
+    @Test
     public void XOutOfBoundsTest(){
-        Assert.equals(404,gameLogic.checkMoveStatus(3,0,1));
+        Assert.assertEquals(404,gameLogic.newMoveAttempt(3,0,player1));
     }
     @Test
     public void YOutOfBoundsTest(){
-        Assert.equals(404,gameLogic.checkMoveStatus(2,-1,1));
+        Assert.assertEquals(404,gameLogic.newMoveAttempt(2,-1,player1));
     }
 
 }

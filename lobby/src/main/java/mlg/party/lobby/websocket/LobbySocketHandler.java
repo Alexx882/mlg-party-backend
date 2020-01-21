@@ -144,7 +144,6 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 2. give the game information about participating players and their websocket
         game.startGame();
-
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
         sendMessageToPlayers(lobbyService.getPlayersForLobby(request.getLobbyName()), gson.toJson(response));
@@ -208,6 +207,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         try {
+            logger.log("SocketHandler", message.getPayload());
             handle(session, parser.parseMessage(message.getPayload()));
         } catch (IllegalArgumentException e) {
             logger.error(this, String.format("Failed to derive a type for message: %s", message.getPayload()));

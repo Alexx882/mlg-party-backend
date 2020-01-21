@@ -1,16 +1,22 @@
-package at.aau.ase.mlg_party_app.tictactoe;
+package mlg.party.games.tictactoe;
 /*
     Handles the gamelogic
  */
 
+import mlg.party.lobby.lobby.Player;
+
+import java.util.List;
+
 class TicTacToeLogic {
     private int [][] gameBoard;
+    List<Player>players;
     final private int boardSize=3; // for easy acces instead of .length
     private int currentPlayer;
-    TicTacToeLogic() {
+    TicTacToeLogic(List<Player>participants) {
        resetGameBoard();
         //Player 1 starts first
          this.currentPlayer=1;
+         this.players=participants;
     }
     /*
     Check if the move is valid,
@@ -22,26 +28,45 @@ class TicTacToeLogic {
 
     RETURN VALUES:
         20x -> Valid move
-            1 = MOVE ADDED TO BOARD
+            0 = MOVE ADDED TO BOARD
             1 = CURRENT MOVE WON THE GAME
             2 = TIE
        40 -> ERROR
             0 = Not your turn
             1 = Not an empty field
+            2 = unknown player
             4 = Out of bounds
      */
-    int checkMoveStatus(int x, int y, int playerId){
+    int newMoveAttempt(int x, int y, String playerIdString){
+        //dumbing down the player id to 1 or 2 to keep the logic simple
+        int playerId;
+        if(playerIdString.equals(players.get(0).getId())){
+            playerId=1;
+        }else if(playerIdString.equals(players.get(1).getId())){
+            playerId=2;
+        }else{
+            return 402;
+        }
+
         int count=0;
         //Check if the move is valid
         //Right player?
-        if(currentplayer != playerId)return 400;
+        if(currentPlayer != playerId)return 400;
         //Out of bounds? valid indexes are 0-2 for x and y
         if(x<0||x>2 ||y<0||y>2)return 404;
         //Field is not empty
-        if(gameboard[x][y]!=0)return 401;
+        if(gameBoard[x][y]!=0)return 401;
 
         //Update the game board (move is valid)
         gameBoard[x][y]=playerId;
+
+        //Update currentPlayer
+        if(playerId==1){
+            currentPlayer=2;
+        }else{
+            currentPlayer=1;
+        }
+
 
         //Check if the move won vertically
         for(int j=0;j<gameBoard[x].length;j++){

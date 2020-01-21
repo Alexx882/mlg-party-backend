@@ -1,4 +1,4 @@
-package mlg.party.games.cocktail_shaker;
+package mlg.party.games.tictactoe;
 
 import mlg.party.games.GameFactory;
 import mlg.party.lobby.lobby.Player;
@@ -12,22 +12,23 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import javax.annotation.PostConstruct;
 import java.util.List;
 
+
 @Service
 @Configuration
 @EnableWebSocket
-public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> implements WebSocketConfigurer {
+public class TicTacToeFactory extends GameFactory<TicTacToeGame> implements WebSocketConfigurer {
 
     @Value("${mlg.games.endpoints.base}")
     private String host;
 
-    @Value("${mlg.games.endpoints.shaker}")
+    @Value("${mlg.games.endpoints.tictactoe}")
     private String url;
 
-    public CocktailShakerFactory(CocktailShakerSocketHandler handler) {
+    public TicTacToeFactory(TicTacToeSocketHandler handler) {
         this.handler = handler;
     }
 
-    private final CocktailShakerSocketHandler handler;
+    private final TicTacToeSocketHandler handler;
 
     @PostConstruct
     public void register() {
@@ -35,10 +36,10 @@ public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> imple
     }
 
     @Override
-    public CocktailShakerGame createGame(String lobbyId, List<Player> players) {
-        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(lobbyId, players, url);
-        cocktailShakerGame.setSocketHandler(handler);
-        return cocktailShakerGame;
+    public TicTacToeGame createGame(String lobbyId, List<Player> players) {
+        TicTacToeGame ticTacToeGame = new TicTacToeGame(lobbyId, players, url);
+        ticTacToeGame.setSocketHandler(handler);
+        return ticTacToeGame;
     }
 
     @Override
@@ -46,3 +47,4 @@ public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> imple
         registry.addHandler(handler, url).setAllowedOrigins("*");
     }
 }
+
