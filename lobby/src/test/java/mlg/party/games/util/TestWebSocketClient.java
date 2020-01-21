@@ -1,9 +1,6 @@
 package mlg.party.games.util;
 
-import javax.websocket.ClientEndpoint;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -44,6 +41,11 @@ public class TestWebSocketClient {
     public void onMessage(String message) {
         print("RECEIVED " + message);
         replies.add(message);
+    }
+
+    @OnError
+    public void onError(Session session, Throwable exception) {
+        System.out.println(String.format("ERROR in websocket: %s", exception));
     }
 
     public void send(String message) throws IOException {

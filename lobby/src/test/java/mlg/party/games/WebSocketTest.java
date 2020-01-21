@@ -19,7 +19,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.websocket.ContainerProvider;
@@ -30,14 +29,13 @@ import java.net.URI;
 import java.security.SecureRandom;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import static org.awaitility.Awaitility.await;
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WebSocketTest {
 
     private final String uri = "ws://localhost:%d/lobby";
@@ -54,6 +52,7 @@ public class WebSocketTest {
     @Before
     public void setup() throws IOException, DeploymentException {
         connectNClientsToURI(N_CLIENTS, URI.create(String.format(uri, port)));
+        await().until(executor.leader.isOpen());
     }
 
     public void tearDown() throws IOException {
