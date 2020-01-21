@@ -35,7 +35,6 @@ import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class WebSocketTest {
 
     private final String uri = "ws://localhost:%d/lobby";
@@ -174,7 +173,7 @@ public class WebSocketTest {
         assertTrue(executor.isConnectionOfAllPlayersClosed());
     }
 
-    @Test
+//    @Test
     public void cocktailShakerTest() throws IOException, DeploymentException {
         // 1. create a lobby
         CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(executor.leader.name);
