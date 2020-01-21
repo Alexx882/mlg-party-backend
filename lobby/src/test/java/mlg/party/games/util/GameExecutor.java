@@ -8,6 +8,7 @@ import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import mlg.party.lobby.websocket.requests.JoinLobbyRequest;
 import mlg.party.lobby.websocket.responses.BasicWebSocketResponse;
 
+import javax.websocket.CloseReason;
 import java.io.IOException;
 import java.security.SecureRandom;
 import java.util.LinkedList;
@@ -31,6 +32,15 @@ public class GameExecutor {
 
     public boolean isInitialized() {
         return leader != null && players.size() > 0;
+    }
+
+    public void close() throws IOException {
+        if (leader.session.isOpen())
+            leader.session.close();
+
+        for (TestWebSocketClient player : players)
+            if (player.session.isOpen())
+                player.session.close();
     }
 
     public void reset(TestWebSocketClient leader, List<TestWebSocketClient> players) {

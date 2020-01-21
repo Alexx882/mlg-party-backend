@@ -33,6 +33,7 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
      */
     public void registerNewGameInstance(T instance) {
         gameInstances.put(instance.lobbyId, instance);
+        getLogger().log(this, String.format("Registered Game(%s) for Players: %s", instance.getGameName(), instance.players));
     }
 
     public void removeGameInstance(T instance) {

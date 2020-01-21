@@ -52,6 +52,10 @@ public class WebSocketTest {
         connectNClientsToURI(N_CLIENTS, URI.create(String.format(uri, port)));
     }
 
+    public void tearDown() throws IOException {
+        executor.close();
+    }
+
     private void connectNClientsToURI(int n, URI uri) throws IOException, DeploymentException {
         WebSocketContainer container = ContainerProvider.getWebSocketContainer();
 
@@ -223,6 +227,7 @@ public class WebSocketTest {
 
         StartGameResponse startGameResponse = gson.fromJson(startGameResponseString, StartGameResponse.class);
         assertEquals("StartGame", startGameResponse.type);
+        assertEquals(200, startGameResponse.status);
 
         // only continue if the shakergame got chosen
         // todo ensure that through spring black magic, too lazy now
@@ -233,6 +238,7 @@ public class WebSocketTest {
                 for (String response : responses) {
                     StartGameResponse startGameResponsePrime = gson.fromJson(response, StartGameResponse.class);
                     assertEquals("StartGame", startGameResponsePrime.type);
+                    assertEquals(200, startGameResponsePrime.status);
                 }
             }
 
