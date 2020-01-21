@@ -1,9 +1,6 @@
 package mlg.party.games.util;
 
-import javax.websocket.ClientEndpoint;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -14,10 +11,21 @@ public class TestWebSocketClient {
     Session session;
 
     public final String name;
+    private String id;
+
     private Queue<String> replies = new LinkedList<>();
 
     public TestWebSocketClient(String name) {
         this.name = name;
+    }
+
+    public Callable<Boolean> isOpen() {
+        return new Callable<Boolean>() {
+            @Override
+            public Boolean call() throws Exception {
+                return session != null && session.isOpen();
+            }
+        };
     }
 
     @OnOpen
@@ -33,6 +41,11 @@ public class TestWebSocketClient {
     public void onMessage(String message) {
         print("RECEIVED " + message);
         replies.add(message);
+    }
+
+    @OnError
+    public void onError(Session session, Throwable exception) {
+        System.out.println(String.format("ERROR in websocket: %s", exception));
     }
 
     public void send(String message) throws IOException {
@@ -58,5 +71,13 @@ public class TestWebSocketClient {
             throw new IllegalStateException(String.format("no reply to pop in Connection(%s)!", name));
 
         return replies.poll();
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

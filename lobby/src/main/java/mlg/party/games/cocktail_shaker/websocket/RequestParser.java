@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.RequestParserBase;
+import mlg.party.games.websocket.requests.HelloGameRequest;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,10 @@ public class RequestParser extends RequestParserBase {
 
         try {
             switch (type) {
+                case "HelloGame":
+                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
+                        throw new IllegalArgumentException("Missing fields");
+                    return gson.fromJson(json, HelloGameRequest.class);
                 case "CocktailShakerResult":
                     if (!jsonObject.has("playerId") || !jsonObject.has("max") || !jsonObject.has("avg"))
                         throw new IllegalArgumentException("Missing fields");

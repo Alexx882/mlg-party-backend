@@ -8,6 +8,7 @@ import mlg.party.lobby.logging.ILogger;
 import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.LobbySocketHandler;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -33,6 +34,7 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
      */
     public void registerNewGameInstance(T instance) {
         gameInstances.put(instance.lobbyId, instance);
+        getLogger().log(this, String.format("Registered Game(%s) for Players: %s", instance.getGameName(), instance.players));
     }
 
     public void removeGameInstance(T instance) {
@@ -59,9 +61,14 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
     protected boolean handleRequest(WebSocketSession session, BasicWebSocketRequest request) throws IOException {
         if (request instanceof HelloGameRequest) {
             HelloGameRequest helloGameRequest = (HelloGameRequest) request;
-            getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
 
-            if (gameInstances.containsKey(helloGameRequest.lobbyName) && gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session)) {
+            boolean contains = gameInstances.containsKey(helloGameRequest.lobbyName);
+            boolean identify = gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session);
+
+            getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
+            getLogger().log(this, String.format("%s\n%s", contains, identify));
+
+            if (contains && identify) {
                 sendMessageToPlayer(session, new HelloGameResponse(200));
             } else
                 sendMessageToPlayer(session, new HelloGameResponse(404));
