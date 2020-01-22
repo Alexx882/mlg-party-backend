@@ -7,11 +7,12 @@ import mlg.party.lobby.lobby.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailShakerSocketHandler> {
 
     private final String endpoint;
-    private List<CocktailShakerResult> gameResults = new ArrayList<>(playerConnections.size());
+    private List<CocktailShakerResult> gameResults = new CopyOnWriteArrayList<>();
 
     public CocktailShakerGame(String lobbyId, List<Player> participants, String endpoint) {
         super(lobbyId, participants);
