@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class CocktailShakerGameTests {
@@ -51,7 +52,7 @@ public class CocktailShakerGameTests {
         game.handleNewResult(new CocktailShakerResult("123", "2", 3, 2));
         game.handleNewResult(new CocktailShakerResult("123", "3", 2, 3));
 
-        Mockito.verify(handler).sendMessageToPlayers(game, new GameFinishedResponse("3"));
+        Mockito.verify(handler).sendMessageToPlayers(game, new GameFinishedResponse("3", new LinkedList<>()));
     }
 
     @Test

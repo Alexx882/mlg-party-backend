@@ -3,6 +3,7 @@ package mlg.party.lobby.lobby;
 public class Player {
     private String id;
     private String name;
+    private int points = 0;
 
     public Player(String id, String name) {
         this.id = id;
@@ -24,5 +25,13 @@ public class Player {
     @Override
     public String toString() {
         return "Player(" + id + ')';
+    }
+
+    public void increasePoints() {
+        points++;
+    }
+
+    public int getPoints() {
+        return points;
     }
 }

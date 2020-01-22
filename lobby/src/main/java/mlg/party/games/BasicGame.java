@@ -93,7 +93,7 @@ public abstract class BasicGame<G extends BasicGame<?, ?>, T extends GameWebSock
      */
     public void notifyGameFinished(G game, String winnerId) {
         try {
-            GameFinishedResponse response = new GameFinishedResponse(winnerId);
+            GameFinishedResponse response = new GameFinishedResponse(winnerId, players);
             socketHandler.sendMessageToPlayers(game, response);
         } catch (IOException e) {
             e.printStackTrace();

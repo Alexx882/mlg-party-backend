@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BasicGameTests {
@@ -110,6 +111,6 @@ public class BasicGameTests {
 
         game.notifyGameFinished(game, "1");
 
-        Mockito.verify(handler).sendMessageToPlayers(game, new GameFinishedResponse("1"));
+        Mockito.verify(handler).sendMessageToPlayers(game, new GameFinishedResponse("1", new LinkedList<>()));
     }
 }

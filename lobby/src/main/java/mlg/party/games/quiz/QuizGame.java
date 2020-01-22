@@ -42,7 +42,7 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
     }
 
     public void handleNewResult(QuizResult result) {
-        if(result == null)
+        if (result == null)
             throw new IllegalArgumentException("result cannot be null");
 
         gameResults.add(result);
@@ -56,15 +56,20 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
         QuizResult player2 = results.get(1);
         QuizResult best = new QuizResult(lobbyId, "Draw", false);
 
-
-         if (player1.won && !player2.won) {
+        if (player1.won && !player2.won) {
             best = player1;
         } else if (player2.won && !player1.won) {
             best = player2;
         }
 
+        for (Player player : players)
+            if (player.getId().equals(best.playerId))
+                player.increasePoints();
+
+        players.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
+
         try {
-            GameFinishedResponse response = new GameFinishedResponse(best.playerId);
+            GameFinishedResponse response = new GameFinishedResponse(best.playerId, players);
             socketHandler.sendMessageToPlayers(this, response);
         } catch (IOException e) {
             e.printStackTrace();
