@@ -3,8 +3,6 @@ package mlg.party.games.quiz;
 import mlg.party.Callback;
 import mlg.party.games.BasicGame;
 import mlg.party.games.GameFinishedArgs;
-import mlg.party.games.cocktail_shaker.CocktailShakerSocketHandler;
-import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.games.quiz.websocket.requests.QuizResult;
 import mlg.party.games.websocket.responses.GameFinishedResponse;
 import mlg.party.lobby.lobby.Player;
