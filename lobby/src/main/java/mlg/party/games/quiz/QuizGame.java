@@ -1,9 +1,9 @@
-package mlg.party.games.rps;
+package mlg.party.games.quiz;
 
 import mlg.party.Callback;
 import mlg.party.games.BasicGame;
 import mlg.party.games.GameFinishedArgs;
-import mlg.party.games.rps.websocket.requests.RpsResult;
+import mlg.party.games.quiz.websocket.requests.QuizResult;
 import mlg.party.games.websocket.responses.GameFinishedResponse;
 import mlg.party.lobby.lobby.Player;
 
@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RpsGame extends BasicGame<RpsGame, RpsSocketHandler> {
+public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
 
     private Callback<GameFinishedArgs> gameFinishedCallback = null;
     private final String endpoint;
-    private List<RpsResult> gameResults = new ArrayList<>(playerConnections.size());
+    private List<QuizResult> gameResults = new ArrayList<>(playerConnections.size());
 
-    public RpsGame(String lobbyId, List<Player> participants, String endpoint) {
+    public QuizGame(String lobbyId, List<Player> participants, String endpoint) {
         super(lobbyId, participants);
         this.endpoint = endpoint;
     }
@@ -26,14 +26,14 @@ public class RpsGame extends BasicGame<RpsGame, RpsSocketHandler> {
     public void startGame() {
         socketHandler.registerNewGameInstance(this);
     }
-    
+
     public void registerResultCallback(Callback<GameFinishedArgs> callback) {
         gameFinishedCallback = callback;
     }
 
     @Override
     public String getGameName() {
-        return "Rps";
+        return "Quiz";
     }
 
     @Override
@@ -41,7 +41,7 @@ public class RpsGame extends BasicGame<RpsGame, RpsSocketHandler> {
         return endpoint;
     }
 
-    public void handleNewResult(RpsResult result) {
+    public void handleNewResult(QuizResult result) {
         if(result == null)
             throw new IllegalArgumentException("result cannot be null");
 
@@ -51,25 +51,16 @@ public class RpsGame extends BasicGame<RpsGame, RpsSocketHandler> {
             manageGameFinished(gameResults);
     }
 
-    private void manageGameFinished(List<RpsResult> results) {
-        RpsResult player1 = results.get(0);
-        RpsResult player2 = results.get(1);
-        RpsResult best = null;
-        RpsLogic logic = new RpsLogic();
-        RpsLogic.Result result = logic.checkResult(player1.option, player2.option);
+    private void manageGameFinished(List<QuizResult> results) {
+        QuizResult player1 = results.get(0);
+        QuizResult player2 = results.get(1);
+        QuizResult best = new QuizResult(lobbyId, "Draw", false);
 
-        switch (result) {
-            case WON:
-                best = player1;
-                break;
-            case LOST:
-                best = player2;
-                break;
-            case DRAW:
-                best = new RpsResult(lobbyId,"Draw",null);
-                break;
-            default:
-                best = new RpsResult(lobbyId,"Error",null);
+
+         if (player1.won && !player2.won) {
+            best = player1;
+        } else if (player2.won && !player1.won) {
+            best = player2;
         }
 
         try {
