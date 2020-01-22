@@ -38,7 +38,6 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
 
     public void handleMoveRequest(TicTacToeMoveRequest request){
             int moveResult= gameLogic.newMoveAttempt(request.x,request.y,request.playerId);
-
             if(moveResult/100 == 2){
                 //Notify players about the new gameboard/ gamestatus
                 if(moveResult==200){
@@ -46,7 +45,6 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
                     try {
                         socketHandler.sendMessageToPlayers(this,response);
                     } catch (IOException e) {
-                        System.out.println(e.getMessage());
                         socketHandler.getLogger().error("TicTacToeMoveResponse",e.getMessage());
                     }
                 }else{
@@ -77,7 +75,11 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
         }else {
             super.notifyGameFinished(this, "TIE");
         }
-
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e){
+            socketHandler.getLogger().error("SLEEP","sleeping failed epically");
+        }
         socketHandler.removeGameInstance(this);
         socketHandler.redirectToNextGame(this);
     }

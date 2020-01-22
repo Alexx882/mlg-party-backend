@@ -8,6 +8,8 @@ import mlg.party.lobby.logging.ILogger;
 import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.LobbySocketHandler;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
+import mlg.party.lobby.websocket.requests.StartGameRequest;
+import mlg.party.lobby.websocket.responses.StartGameResponse;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;

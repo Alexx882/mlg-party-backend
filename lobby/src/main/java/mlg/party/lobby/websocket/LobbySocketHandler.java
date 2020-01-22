@@ -127,7 +127,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @param request - request to handle
      * @throws IOException - unexpected closing of a session of one of the participants
      */
-    private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
+    protected void handle(WebSocketSession session, StartGameRequest request) throws IOException {
         List<Player> players = null;
         try {
             players = lobbyService.getPlayersForLobby(request.getLobbyName());
@@ -185,7 +185,11 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
-        sendMessageToPlayers(participants, gson.toJson(response));
+        //sendMessageToPlayers(participants, gson.toJson(response));
+        for(Map.Entry<Player,WebSocketSession> entry: playerConnections.entrySet()){
+            sendMessage(entry.getValue(),response);
+        }
+        logger.log("STARTGAME",gson.toJson(response));
 
         // 4. close the websockets
         for (WebSocketSession session : playerConnections.values())
