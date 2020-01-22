@@ -42,18 +42,19 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
             if(moveResult/100 == 2){
                 //Notify players about the new gameboard/ gamestatus
                 if(moveResult==200){
-                   TicTacToeMoveResponse response= new TicTacToeMoveResponse(request.playerId,request.x,request.y);
+                   TicTacToeMoveResponse response= new TicTacToeMoveResponse(request.playerId,request.lobbyId,request.x,request.y);
                     try {
                         socketHandler.sendMessageToPlayers(this,response);
                     } catch (IOException e) {
-                        //TODO HANDLING
+                        System.out.println(e.getMessage());
+                        socketHandler.getLogger().error("TicTacToeMoveResponse",e.getMessage());
                     }
                 }else{
                     manageGameFinished(moveResult, request.playerId);
                     return;
                 }
             }else{
-                //Sending errors only to Player who tried to place the wrong move
+                //TODO:Sending errors only to Player who tried to place the wrong move
                 TicTacToeErrorResponse response;
                 if(moveResult==400 || moveResult==402){
                     response= new TicTacToeErrorResponse("Error: NotYourTurn!");
@@ -61,9 +62,9 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
                     response= new TicTacToeErrorResponse("Error: InvalidField!");
                 }
                 try {
-                    socketHandler.sendMessageToPlayer(playerConnections.get(request.playerId),response);
+                    socketHandler.sendMessageToPlayers(this,response);
                 } catch (IOException e) {
-                    //TODO HANDLING
+                    socketHandler.getLogger().error("TicTacToeFinishResponse",e.getMessage());
                 }
             }
 
