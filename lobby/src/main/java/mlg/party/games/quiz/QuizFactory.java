@@ -1,6 +1,7 @@
-package mlg.party.games.rps;
-
+package mlg.party.games.quiz;
 import mlg.party.games.GameFactory;
+import mlg.party.games.quiz.QuizGame;
+import mlg.party.games.quiz.QuizSocketHandler;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -15,19 +16,19 @@ import java.util.List;
 @Service
 @Configuration
 @EnableWebSocket
-public class RpsFactory extends GameFactory<RpsGame> implements WebSocketConfigurer {
+public class QuizFactory extends GameFactory<QuizGame> implements WebSocketConfigurer {
 
     @Value("${mlg.games.endpoints.base}")
     private String host;
 
-    @Value("${mlg.games.endpoints.rps}")
+    @Value("${mlg.games.endpoints.quiz}")
     private String url;
 
-    public RpsFactory(RpsSocketHandler handler) {
+    public QuizFactory(QuizSocketHandler handler) {
         this.handler = handler;
     }
 
-    private final RpsSocketHandler handler;
+    private final QuizSocketHandler handler;
 
     @PostConstruct
     public void register() {
@@ -35,10 +36,10 @@ public class RpsFactory extends GameFactory<RpsGame> implements WebSocketConfigu
     }
 
     @Override
-    public RpsGame createGame(String lobbyId, List<Player> players) {
-        RpsGame rpsGame = new RpsGame(lobbyId, players, url);
-        rpsGame.setSocketHandler(handler);
-        return rpsGame;
+    public QuizGame createGame(String lobbyId, List<Player> players) {
+        QuizGame quizGame = new QuizGame(lobbyId, players, url);
+        quizGame.setSocketHandler(handler);
+        return quizGame;
     }
 
     @Override

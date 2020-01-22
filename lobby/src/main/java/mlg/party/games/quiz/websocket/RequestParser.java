@@ -1,16 +1,16 @@
-package mlg.party.games.rps.websocket;
+package mlg.party.games.quiz.websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import mlg.party.RequestParserBase;
-import mlg.party.games.rps.websocket.requests.RpsResult;
+import mlg.party.games.quiz.websocket.requests.QuizResult;
 import mlg.party.games.websocket.requests.HelloGameRequest;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
 import org.springframework.stereotype.Service;
 
-@Service(value = "RpsRequestParser")
-public class RequestParserRps extends RequestParserBase {
+@Service(value = "QuizRequestParser")
+public class RequestParser extends RequestParserBase {
 
     private static final Gson gson = new Gson();
 
@@ -21,10 +21,10 @@ public class RequestParserRps extends RequestParserBase {
 
         try {
             switch (type) {
-                case "RpsResult":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("option"))
-                    throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, RpsResult.class);
+                case "QuizResult":
+                    if (!jsonObject.has("playerId") || !jsonObject.has("won"))
+                        throw new IllegalArgumentException("Missing fields");
+                    return gson.fromJson(json, QuizResult.class);
 
                 case "HelloGame":
                     if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
