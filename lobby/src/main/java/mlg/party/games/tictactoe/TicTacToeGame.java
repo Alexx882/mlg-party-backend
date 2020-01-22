@@ -73,7 +73,7 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
 
     private void manageGameFinished(int result, String playerId) {
         if(result==201){
-            super.notifyGameFinished(this, "playerId");
+            super.notifyGameFinished(this, playerId);
         }else {
             super.notifyGameFinished(this, "TIE");
         }
