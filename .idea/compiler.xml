@@ -15,6 +15,7 @@
       <module name="lobby" target="13" />
       <module name="main" target="1.5" />
       <module name="mlg-party-backend" target="1.5" />
+      <module name="mlg-party-backend-Test" target="1.5" />
       <module name="rock-paper-scissors" target="1.5" />
     </bytecodeTargetLevel>
   </component>

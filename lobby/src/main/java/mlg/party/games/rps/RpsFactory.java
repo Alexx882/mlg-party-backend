@@ -1,8 +1,6 @@
 package mlg.party.games.rps;
 
 import mlg.party.games.GameFactory;
-import mlg.party.games.cocktail_shaker.CocktailShakerGame;
-import mlg.party.games.cocktail_shaker.CocktailShakerSocketHandler;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

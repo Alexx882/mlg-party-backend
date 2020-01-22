@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RpsGame extends BasicGame<RpsSocketHandler> {
+public class RpsGame extends BasicGame<RpsGame, RpsSocketHandler> {
 
     private Callback<GameFinishedArgs> gameFinishedCallback = null;
     private final String endpoint;
@@ -26,8 +26,7 @@ public class RpsGame extends BasicGame<RpsSocketHandler> {
     public void startGame() {
         socketHandler.registerNewGameInstance(this);
     }
-
-    @Override
+    
     public void registerResultCallback(Callback<GameFinishedArgs> callback) {
         gameFinishedCallback = callback;
     }
