@@ -5,14 +5,13 @@ import mlg.party.lobby.lobby.Player;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Factory for different games
  *
  * @param <T> A game class extending BasicGame
  */
-public abstract class GameFactory<T extends BasicGame<?>> {
+public abstract class GameFactory<T extends BasicGame<?, ?>> {
     private static List<GameFactory<?>> factories = new LinkedList<>();
 
     public void registerFactory(GameFactory<?> factory) {

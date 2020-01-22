@@ -12,9 +12,32 @@ public class CocktailShakerResult extends BasicWebSocketRequest {
         this.avg = avg;
     }
 
-    public String lobbyId;
-    public String playerId;
-    public float max;
-    public float avg;
+    public final String lobbyId;
+    private String playerId;
+    private float max;
+    private float avg;
 
+    public String getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(String playerId) {
+        this.playerId = playerId;
+    }
+
+    public float getMax() {
+        return max;
+    }
+
+    public void setMax(float max) {
+        this.max = max;
+    }
+
+    public float getAvg() {
+        return avg;
+    }
+
+    public void setAvg(float avg) {
+        this.avg = avg;
+    }
 }

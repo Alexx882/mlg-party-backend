@@ -8,7 +8,7 @@ import java.util.*;
 @Service
 public class LobbyService implements ILobbyService {
 
-    private int lobbyNameLength = 4;
+    private final int lobbyNameLength = 4;
     private char[] alphabet = "1234567890".toCharArray();
 
     private Map<String, List<Player>> lobbies = new HashMap<>();

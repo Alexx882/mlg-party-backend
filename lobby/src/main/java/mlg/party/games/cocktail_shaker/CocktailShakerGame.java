@@ -1,19 +1,15 @@
 package mlg.party.games.cocktail_shaker;
 
-import mlg.party.Callback;
 import mlg.party.games.BasicGame;
+import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
-import mlg.party.games.websocket.responses.GameFinishedResponse;
-import mlg.party.games.GameFinishedArgs;
 import mlg.party.lobby.lobby.Player;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
+public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailShakerSocketHandler> {
 
-    private Callback<GameFinishedArgs> gameFinishedCallback = null;
     private final String endpoint;
     private List<CocktailShakerResult> gameResults = new ArrayList<>(playerConnections.size());
 
@@ -28,11 +24,6 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
     }
 
     @Override
-    public void registerResultCallback(Callback<GameFinishedArgs> callback) {
-        gameFinishedCallback = callback;
-    }
-
-    @Override
     public String getGameName() {
         return "CocktailShaker";
     }
@@ -43,7 +34,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
     }
 
     public void handleNewResult(CocktailShakerResult result) {
-        if(result == null)
+        if (result == null)
             throw new IllegalArgumentException("result cannot be null");
 
         gameResults.add(result);
@@ -55,22 +46,12 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerSocketHandler> {
     private void manageGameFinished(List<CocktailShakerResult> results) {
         CocktailShakerResult best = results.get(0);
         for (CocktailShakerResult cur : results)
-            if (best.avg < cur.avg)
+            if (best.getAvg() < cur.getAvg())
                 best = cur;
 
-        try {
-            GameFinishedResponse response = new GameFinishedResponse(best.playerId);
-            socketHandler.sendMessageToPlayers(this, response);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if (gameFinishedCallback != null) {
-            GameFinishedArgs args = new GameFinishedArgs(lobbyId, best.playerId);
-            gameFinishedCallback.callback(args);
-        }
+        super.notifyGameFinished(this, best.getPlayerId());
 
         socketHandler.removeGameInstance(this);
-        // todo herold pass back to lobby
+        socketHandler.redirectToNextGame(this);
     }
 }
