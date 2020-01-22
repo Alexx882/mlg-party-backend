@@ -8,7 +8,6 @@ import mlg.party.lobby.logging.ILogger;
 import mlg.party.RequestParserBase;
 import mlg.party.lobby.websocket.LobbySocketHandler;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
-import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -59,6 +58,8 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
      * @return true, if the request was handled successfully
      */
     protected boolean handleRequest(WebSocketSession session, BasicWebSocketRequest request) throws IOException {
+        getLogger().log(this, String.format("RECEIVED: %s", gson.toJson(request)));
+
         if (request instanceof HelloGameRequest) {
             HelloGameRequest helloGameRequest = (HelloGameRequest) request;
 
@@ -67,7 +68,6 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
             boolean identify = gameInstances.get(helloGameRequest.lobbyName).identifyPlayer(helloGameRequest.playerId, session);
 
             getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
-            getLogger().log(this, String.format("%s\n%s", contains, identify));
 
             if (contains && identify) {
                 sendMessageToPlayer(session, new HelloGameResponse(200));

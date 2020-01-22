@@ -81,6 +81,6 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
         }
 
         socketHandler.removeGameInstance(this);
-        // todo herold pass back to lobby
+        socketHandler.redirectToNextGame(this);
     }
 }
