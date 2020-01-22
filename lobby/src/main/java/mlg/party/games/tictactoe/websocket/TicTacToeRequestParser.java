@@ -22,14 +22,15 @@ public class TicTacToeRequestParser extends RequestParserBase {
         String type = jsonObject.get("type").getAsString();
         try {
             switch (type) {
+                case "TicTacToeMove":
+                if (!jsonObject.has("playerId") ||!jsonObject.has("lobbyId")|| !jsonObject.has("x") || !jsonObject.has("y"))
+                    throw new IllegalArgumentException("Missing fields");
+                return gson.fromJson(json, TicTacToeMoveRequest.class);
                 case "HelloGame":
                     if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, HelloGameRequest.class);
-                case "TicTacToeMove":
-                    if (!jsonObject.has("playerId") ||!jsonObject.has("lobbyId")|| !jsonObject.has("x") || !jsonObject.has("y"))
-                        throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, TicTacToeMoveRequest.class);
+
                 case "StartGame":
                     if (!jsonObject.has("lobbyName"))
                         throw new IllegalArgumentException("Missing fields");

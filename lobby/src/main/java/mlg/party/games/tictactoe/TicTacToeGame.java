@@ -38,6 +38,7 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
 
     public void handleMoveRequest(TicTacToeMoveRequest request){
             int moveResult= gameLogic.newMoveAttempt(request.x,request.y,request.playerId);
+        System.out.println(moveResult+ "|| "+request.playerId);
             if(moveResult/100 == 2){
                 //Notify players about the new gameboard/ gamestatus
                 if(moveResult==200){

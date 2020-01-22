@@ -11,11 +11,11 @@ class TicTacToeLogic {
     private int [][] gameBoard;
     List<Player>players;
     final private int boardSize=3; // for easy acces instead of .length
-    private int currentPlayer;
+    private int lastPlayer;
     TicTacToeLogic(List<Player>participants) {
        resetGameBoard();
         //Player 1 starts first
-         this.currentPlayer=1;
+         this.lastPlayer=0;
          this.players=participants;
     }
     /*
@@ -51,7 +51,7 @@ class TicTacToeLogic {
         int count=0;
         //Check if the move is valid
         //Right player?
-        if(currentPlayer != playerId)return 400;
+        if(lastPlayer == playerId )return 400;
         //Out of bounds? valid indexes are 0-2 for x and y
         if(x<0||x>2 ||y<0||y>2)return 404;
         //Field is not empty
@@ -61,11 +61,7 @@ class TicTacToeLogic {
         gameBoard[x][y]=playerId;
 
         //Update currentPlayer
-        if(playerId==1){
-            currentPlayer=2;
-        }else{
-            currentPlayer=1;
-        }
+        lastPlayer=playerId;
 
 
         //Check if the move won vertically

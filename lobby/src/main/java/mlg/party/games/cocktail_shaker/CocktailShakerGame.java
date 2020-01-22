@@ -49,7 +49,11 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailSh
                 best = cur;
 
         super.notifyGameFinished(this, best.playerId);
-
+        try{
+            Thread.sleep(1000);
+        }catch(InterruptedException e){
+            socketHandler.getLogger().error("SLEEP","sleeping failed epically");
+        }
         socketHandler.removeGameInstance(this);
         socketHandler.redirectToNextGame(this);
     }
