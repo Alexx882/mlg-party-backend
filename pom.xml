@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mlg.party</groupId>
-    <artifactId>mlg-party-backend</artifactId>
+    <artifactId>main</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>mlg-party-backend</name>
     <description>Creates and manages the lobbies opened by endpoint users</description>
@@ -144,7 +144,6 @@
             <version>4.0.2</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
 </project>
