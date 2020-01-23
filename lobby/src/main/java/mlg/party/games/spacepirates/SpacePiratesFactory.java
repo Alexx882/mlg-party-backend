@@ -1,7 +1,7 @@
-package mlg.party.games.cocktail_shaker;
+package mlg.party.games.spacepirates;
 
 import mlg.party.games.GameFactory;
-import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
+import mlg.party.games.spacepirates.websocket.SpacePiratesSocketHandler;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -16,30 +16,30 @@ import java.util.List;
 @Service
 @Configuration
 @EnableWebSocket
-public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> implements WebSocketConfigurer {
+public class SpacePiratesFactory extends GameFactory<SpacePiratesGame> implements WebSocketConfigurer {
 
     @Value("${mlg.games.endpoints.base}")
     private String host;
 
-    @Value("${mlg.games.endpoints.shaker}")
+    @Value("${mlg.games.endpoints.spacepirates}")
     private String url;
 
-    public CocktailShakerFactory(CocktailShakerSocketHandler handler) {
+    public SpacePiratesFactory(SpacePiratesSocketHandler handler) {
         this.handler = handler;
     }
 
-    private final CocktailShakerSocketHandler handler;
+    private final SpacePiratesSocketHandler handler;
 
-
+    @PostConstruct
     public void register() {
         registerFactory(this);
     }
 
     @Override
-    public CocktailShakerGame createGame(String lobbyId, List<Player> players) {
-        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(lobbyId, players, url);
-        cocktailShakerGame.setSocketHandler(handler);
-        return cocktailShakerGame;
+    public SpacePiratesGame createGame(String lobbyId, List<Player> players) {
+        SpacePiratesGame spacePiratesGame = new SpacePiratesGame(lobbyId, players, url);
+        spacePiratesGame.setSocketHandler(handler);
+        return spacePiratesGame;
     }
 
     @Override
