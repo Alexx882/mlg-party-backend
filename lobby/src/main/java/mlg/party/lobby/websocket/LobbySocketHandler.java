@@ -127,7 +127,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @param request - request to handle
      * @throws IOException - unexpected closing of a session of one of the participants
      */
-    protected void handle(WebSocketSession session, StartGameRequest request) throws IOException {
+    private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
         List<Player> players = null;
         try {
             players = lobbyService.getPlayersForLobby(request.getLobbyName());
@@ -144,6 +144,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 2. give the game information about participating players and their websocket
         game.startGame();
+
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
         sendMessageToPlayers(lobbyService.getPlayersForLobby(request.getLobbyName()), gson.toJson(response));
@@ -185,15 +186,14 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
-        //sendMessageToPlayers(participants, gson.toJson(response));
-        for(Map.Entry<Player,WebSocketSession> entry: playerConnections.entrySet()){
-            sendMessage(entry.getValue(),response);
-        }
-        logger.log("STARTGAME",gson.toJson(response));
+        for (WebSocketSession connection : playerConnections.values())
+            connection.sendMessage(new TextMessage(gson.toJson(response)));
 
         // 4. close the websockets
         for (WebSocketSession session : playerConnections.values())
             session.close(CloseStatus.NORMAL);
+
+        playerConnections.clear();
     }
 
     public void sendMessage(WebSocketSession s, Object message) throws IOException {
@@ -211,7 +211,6 @@ public class LobbySocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         try {
-            logger.log("SocketHandler", message.getPayload());
             handle(session, parser.parseMessage(message.getPayload()));
         } catch (IllegalArgumentException e) {
             logger.error(this, String.format("Failed to derive a type for message: %s", message.getPayload()));

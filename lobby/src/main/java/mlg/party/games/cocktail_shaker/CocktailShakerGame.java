@@ -45,10 +45,10 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailSh
     private void manageGameFinished(List<CocktailShakerResult> results) {
         CocktailShakerResult best = results.get(0);
         for (CocktailShakerResult cur : results)
-            if (best.avg < cur.avg)
+            if (best.getAvg() < cur.getAvg())
                 best = cur;
 
-        super.notifyGameFinished(this, best.playerId);
+        super.notifyGameFinished(this, best.getPlayerId());
         try{
             Thread.sleep(1000);
         }catch(InterruptedException e){

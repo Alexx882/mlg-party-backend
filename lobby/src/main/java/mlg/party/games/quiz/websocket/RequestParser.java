@@ -1,16 +1,15 @@
-package mlg.party.games.cocktail_shaker.websocket;
+package mlg.party.games.quiz.websocket;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
-import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.RequestParserBase;
+import mlg.party.games.quiz.websocket.requests.QuizResult;
 import mlg.party.games.websocket.requests.HelloGameRequest;
 import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
-import mlg.party.lobby.websocket.requests.StartGameRequest;
 import org.springframework.stereotype.Service;
 
-@Service(value = "CocktailShakerRequestParser")
+@Service(value = "QuizRequestParser")
 public class RequestParser extends RequestParserBase {
 
     private static final Gson gson = new Gson();
@@ -22,23 +21,15 @@ public class RequestParser extends RequestParserBase {
 
         try {
             switch (type) {
-                case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
+                case "QuizResult":
+                    if (!jsonObject.has("playerId") || !jsonObject.has("won"))
                         throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, HelloGameRequest.class);
-                case "CocktailShakerResult":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("max") || !jsonObject.has("avg"))
-                        throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, CocktailShakerResult.class);
-                case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
-                        throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, HelloGameRequest.class);
+                    return gson.fromJson(json, QuizResult.class);
 
-                case "StartGame":
-                    if (!jsonObject.has("lobbyName"))
+                case "HelloGame":
+                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
                         throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, StartGameRequest.class);
+                    return gson.fromJson(json, HelloGameRequest.class);
                 default:
                     throw new IllegalArgumentException("Invalid message type: '" + type + "'");
             }
