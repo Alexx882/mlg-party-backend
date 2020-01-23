@@ -29,6 +29,7 @@ public class ClickerFactory extends GameFactory<ClickerGame> implements WebSocke
 
     private final ClickerSocketHandler handler;
 
+    @PostConstruct
     public void register() {
         registerFactory(this);
     }
