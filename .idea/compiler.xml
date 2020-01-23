@@ -6,14 +6,14 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="lobby" />
+        <module name="mlg-party-backend" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="leaderboard" target="13" />
       <module name="lobby" target="13" />
       <module name="main" target="1.5" />
-      <module name="mlg-party-backend" target="1.5" />
+      <module name="mlg-party-backend" target="13" />
       <module name="mlg-party-backend-quiz" target="1.5" />
       <module name="mlg-party-backend3" target="1.5" />
       <module name="rock-paper-scissors" target="1.5" />
@@ -23,6 +23,7 @@
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="leaderboard" options="-parameters" />
       <module name="lobby" options="-parameters" />
+      <module name="mlg-party-backend" options="-parameters" />
     </option>
   </component>
 </project>

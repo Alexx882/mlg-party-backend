@@ -22,7 +22,7 @@ public class RequestParser extends RequestParserBase {
         try {
             switch (type) {
                 case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, HelloGameRequest.class);
                 case "ClickerResults":

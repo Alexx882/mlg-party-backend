@@ -51,6 +51,12 @@ public class ClickerGame extends BasicGame<ClickerGame, ClickerSocketHandler> {
             if (best.getMax() < cur.getMax())
                 best = cur;
 
+        for (Player p : players)
+            if (p.getId().equals(best.getPlayerId()))
+                p.increasePoints();
+
+        players.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
+
         super.notifyGameFinished(this, best.getPlayerId());
 
         socketHandler.removeGameInstance(this);

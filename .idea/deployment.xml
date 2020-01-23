@@ -2,7 +2,21 @@
 <project version="4">
   <component name="PublishConfigData">
     <serverData>
+      <paths name="Asset.Inspector">
+        <serverdata>
+          <mappings>
+            <mapping local="$PROJECT_DIR$" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
       <paths name="Mlg">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/" local="$PROJECT_DIR$/out" web="/" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="Pointify">
         <serverdata>
           <mappings>
             <mapping local="$PROJECT_DIR$" web="/" />

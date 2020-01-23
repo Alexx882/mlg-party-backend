@@ -14,17 +14,18 @@ import java.util.List;
  */
 public abstract class GameFactory<T extends BasicGame<?, ?>> {
     private static List<GameFactory<?>> factories = new LinkedList<>();
+    private static int lastPlayedGame = 0;
 
     public void registerFactory(GameFactory<?> factory) {
         factories.add(factory);
     }
-    private static boolean  tmPTest=false;
+
+    private static boolean tmPTest = false;
 
     public static GameFactory<?> getRandomGameFactory() {
-        Collections.shuffle(factories);
-        return factories.get(0);
-
-
+        GameFactory<?> result = factories.get(lastPlayedGame++);
+        lastPlayedGame = lastPlayedGame % factories.size();
+        return result;
     }
 
     /**

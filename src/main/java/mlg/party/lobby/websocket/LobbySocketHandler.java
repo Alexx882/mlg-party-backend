@@ -168,6 +168,9 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         }
     }
 
+
+    BasicGame<?, ?> lastGame;
+
     /**
      * called when a game has finished. it uses the existing connection to ANOTHER endpoint to tell the
      * players what the next game is and where to connect
@@ -190,6 +193,8 @@ public class LobbySocketHandler extends TextWebSocketHandler {
 
         // 2. give the game information about participating players and their websocket
         game.startGame();
+
+        lastGame = game;
 
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
