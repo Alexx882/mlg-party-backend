@@ -69,10 +69,10 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
 
             getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
 
-            if (contains && identify) {
-                sendMessageToPlayer(session, new HelloGameResponse(200));
+            if (contains) {
+                sendMessageToPlayer(session, new HelloGameResponse(200, ""));
             } else
-                sendMessageToPlayer(session, new HelloGameResponse(404));
+                sendMessageToPlayer(session, new HelloGameResponse(404, "Unkown Player"));
 
             return true;
         }

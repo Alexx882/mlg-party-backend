@@ -173,7 +173,107 @@ public class WebSocketTest {
         assertTrue(executor.isConnectionOfAllPlayersClosed());
     }
 
-//    @Test
+    @Test
+    public void repeat1() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat2() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat3() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat4() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat5() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat6() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat7() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat8() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat9() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat10() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat11() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat12() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat13() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat14() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat15() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat16() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat17() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat18() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat19() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
+    public void repeat20() throws IOException, DeploymentException {
+        cocktailShakerTest();
+    }
+
+    @Test
     public void cocktailShakerTest() throws IOException, DeploymentException {
         // 1. create a lobby
         CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(executor.leader.name);
