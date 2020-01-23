@@ -215,6 +215,8 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      */
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+        logger.log(this, String.format("RECEIVED: %s", message.getPayload()));
+
         try {
             handle(session, parser.parseMessage(message.getPayload()));
         } catch (IllegalArgumentException e) {

@@ -58,6 +58,8 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
      * @return true, if the request was handled successfully
      */
     protected boolean handleRequest(WebSocketSession session, BasicWebSocketRequest request) throws IOException {
+        getLogger().log(this, String.format("RECEIVED: %s", gson.toJson(request)));
+
         if (request instanceof HelloGameRequest) {
             HelloGameRequest helloGameRequest = (HelloGameRequest) request;
 
@@ -65,13 +67,12 @@ public abstract class GameWebSocketHandler<T extends BasicGame<?, ?>> extends Te
             // todo exception if !contains
             boolean identify = gameInstances.get(helloGameRequest.lobbyId).identifyPlayer(helloGameRequest.playerId, session);
 
-            getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyId));
-            getLogger().log(this, String.format("%s\n%s", contains, identify));
+            getLogger().log(this, String.format("received HelloGameRequest from Player(%s) for Lobby(%s)", helloGameRequest.playerId, helloGameRequest.lobbyName));
 
-            if (contains && identify) {
-                sendMessageToPlayer(session, new HelloGameResponse(200));
+            if (contains) {
+                sendMessageToPlayer(session, new HelloGameResponse(200, ""));
             } else
-                sendMessageToPlayer(session, new HelloGameResponse(404));
+                sendMessageToPlayer(session, new HelloGameResponse(404, "Unkown Player"));
 
             return true;
         }

@@ -1,17 +1,15 @@
 package mlg.party.games.quiz.websocket.requests;
 
-import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
+import mlg.party.games.websocket.requests.GameResultRequest;
 
-public class QuizResult extends BasicWebSocketRequest {
+public class QuizResult extends GameResultRequest {
 
     public QuizResult(String lobbyId, String playerId, boolean won) {
-        super("QuizResult");
-        this.lobbyId = lobbyId;
+        super("QuizResult", lobbyId);
         this.playerId = playerId;
         this.won = won;
     }
 
-    public String lobbyId;
     public String playerId;
     public boolean won;
 

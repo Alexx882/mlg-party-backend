@@ -9,7 +9,9 @@ import mlg.party.lobby.lobby.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
 
@@ -42,7 +44,7 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
     }
 
     public void handleNewResult(QuizResult result) {
-        if(result == null)
+        if (result == null)
             throw new IllegalArgumentException("result cannot be null");
 
         gameResults.add(result);
@@ -52,19 +54,18 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
     }
 
     private void manageGameFinished(List<QuizResult> results) {
-        QuizResult player1 = results.get(0);
-        QuizResult player2 = results.get(1);
-        QuizResult best = new QuizResult(lobbyId, "Draw", false);
+        List<QuizResult> winners = results.stream().filter((r) -> r.won).collect(Collectors.toList());
+        QuizResult best = winners.size() > 0 ? winners.get(0) : new QuizResult(lobbyId, "Draw", false);
 
+        for (QuizResult winner : winners)
+            for (Player player : players)
+                if (player.getId().equals(winner.playerId))
+                    player.increasePoints();
 
-         if (player1.won && !player2.won) {
-            best = player1;
-        } else if (player2.won && !player1.won) {
-            best = player2;
-        }
+        players.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
 
         try {
-            GameFinishedResponse response = new GameFinishedResponse(best.playerId);
+            GameFinishedResponse response = new GameFinishedResponse(best.playerId, players);
             socketHandler.sendMessageToPlayers(this, response);
         } catch (IOException e) {
             e.printStackTrace();
@@ -76,6 +77,6 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
         }
 
         socketHandler.removeGameInstance(this);
-        // todo herold pass back to lobby
+        socketHandler.redirectToNextGame(this);
     }
 }
