@@ -9,7 +9,9 @@ import mlg.party.lobby.lobby.Player;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
 
@@ -52,19 +54,13 @@ public class QuizGame extends BasicGame<QuizGame, QuizSocketHandler> {
     }
 
     private void manageGameFinished(List<QuizResult> results) {
-        QuizResult player1 = results.get(0);
-        QuizResult player2 = results.get(1);
-        QuizResult best = new QuizResult(lobbyId, "Draw", false);
+        List<QuizResult> winners = results.stream().filter((r) -> r.won).collect(Collectors.toList());
+        QuizResult best = winners.size() > 0 ? winners.get(0) : new QuizResult(lobbyId, "Draw", false);
 
-        if (player1.won && !player2.won) {
-            best = player1;
-        } else if (player2.won && !player1.won) {
-            best = player2;
-        }
-
-        for (Player player : players)
-            if (player.getId().equals(best.playerId))
-                player.increasePoints();
+        for (QuizResult winner : winners)
+            for (Player player : players)
+                if (player.getId().equals(winner.playerId))
+                    player.increasePoints();
 
         players.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
 

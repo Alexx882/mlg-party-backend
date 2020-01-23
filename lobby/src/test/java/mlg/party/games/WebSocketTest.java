@@ -195,8 +195,8 @@ public class WebSocketTest {
         for (String response : joinLobbyResponses) {
             JoinLobbyResponse joinLobbyResponse = gson.fromJson(response, JoinLobbyResponse.class);
             assertEquals("JoinLobby", joinLobbyResponse.type);
-            executor.assignId(joinLobbyResponse.getPlayerid(), position++);
-            ids.add(joinLobbyResponse.getPlayerid());
+            executor.assignId(joinLobbyResponse.getPlayerId(), position++);
+            ids.add(joinLobbyResponse.getPlayerId());
         }
 
         // 3.1 empty the response queue of all the leader which should be full of "PlayerJoined" notifications

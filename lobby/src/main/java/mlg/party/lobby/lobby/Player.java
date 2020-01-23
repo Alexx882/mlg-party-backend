@@ -24,7 +24,8 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player(" + id + ')';
+        String pName = name != null ? name : "undefined";
+        return "Player(" + id + ", " + pName + ')';
     }
 
     public void increasePoints() {

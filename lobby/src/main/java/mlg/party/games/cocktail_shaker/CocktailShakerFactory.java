@@ -30,7 +30,7 @@ public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> imple
 
     private final CocktailShakerSocketHandler handler;
 
-    @PostConstruct
+//    @PostConstruct
     public void register() {
         registerFactory(this);
     }
