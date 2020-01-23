@@ -1,14 +1,20 @@
 package mlg.party.games.websocket.responses;
 
+import mlg.party.lobby.lobby.Player;
+
+import java.util.List;
+
 /**
  * Who won the game.
  */
 public class GameFinishedResponse {
-    public String type = "GameFinished";
-    public String winnerId;
+    public final String type = "GameFinished";
+    public final String winnerId;
+    public final List<Player> ranking;
 
-    public GameFinishedResponse(String winnerId) {
+    public GameFinishedResponse(String winnerId, List<Player> ranking) {
         this.winnerId = winnerId;
+        this.ranking = ranking;
     }
 
     @Override

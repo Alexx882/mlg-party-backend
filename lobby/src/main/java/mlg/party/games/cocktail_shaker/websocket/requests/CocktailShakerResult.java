@@ -1,18 +1,16 @@
 package mlg.party.games.cocktail_shaker.websocket.requests;
 
-import mlg.party.lobby.websocket.requests.BasicWebSocketRequest;
+import mlg.party.games.websocket.requests.GameResultRequest;
 
-public class CocktailShakerResult extends BasicWebSocketRequest {
+public class CocktailShakerResult extends GameResultRequest {
 
     public CocktailShakerResult(String lobbyId, String playerId, float max, float avg) {
-        super("CocktailShakerResult");
-        this.lobbyId = lobbyId;
+        super("CocktailShakerResult", lobbyId);
         this.playerId = playerId;
         this.max = max;
         this.avg = avg;
     }
 
-    public final String lobbyId;
     private String playerId;
     private float max;
     private float avg;

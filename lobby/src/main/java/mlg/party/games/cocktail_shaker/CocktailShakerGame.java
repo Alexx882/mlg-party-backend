@@ -6,12 +6,14 @@ import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.lobby.Player;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailShakerSocketHandler> {
 
     private final String endpoint;
-    private List<CocktailShakerResult> gameResults = new ArrayList<>(playerConnections.size());
+    private List<CocktailShakerResult> gameResults = new CopyOnWriteArrayList<>();
 
     public CocktailShakerGame(String lobbyId, List<Player> participants, String endpoint) {
         super(lobbyId, participants);
@@ -48,6 +50,12 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailSh
         for (CocktailShakerResult cur : results)
             if (best.getAvg() < cur.getAvg())
                 best = cur;
+
+        for (Player player : players)
+            if (player.getId().equals(best.getPlayerId()))
+                player.increasePoints();
+
+        players.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
 
         super.notifyGameFinished(this, best.getPlayerId());
 
