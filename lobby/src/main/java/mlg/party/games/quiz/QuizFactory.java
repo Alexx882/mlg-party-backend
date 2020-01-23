@@ -32,7 +32,7 @@ public class QuizFactory extends GameFactory<QuizGame> implements WebSocketConfi
 
     @PostConstruct
     public void register() {
-        registerFactory(this);
+        //registerFactory(this);
     }
 
     @Override

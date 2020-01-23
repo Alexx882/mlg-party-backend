@@ -50,7 +50,6 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
                     }
                 }else{
                     manageGameFinished(moveResult, request.playerId);
-                    return;
                 }
             }else{
                 //TODO:Sending errors only to Player who tried to place the wrong move
@@ -75,11 +74,6 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
             super.notifyGameFinished(this, playerId);
         }else {
             super.notifyGameFinished(this, "TIE");
-        }
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e){
-            socketHandler.getLogger().error("SLEEP","sleeping failed epically");
         }
         socketHandler.removeGameInstance(this);
         socketHandler.redirectToNextGame(this);

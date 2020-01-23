@@ -65,7 +65,7 @@ public class TicTacToeRequestParserTest {
 
     @Test
     public void parseMessage_StartGaneRequest() {
-        BasicWebSocketRequest req = parser.parseMessage("{\"playerId\":\"Alex\",\"lobbyName\":\"asdf\", \"type\":\"HelloGame\"}");
+        BasicWebSocketRequest req = parser.parseMessage("{\"playerId\":\"Alex\",\"lobbyId\":\"asdf\", \"type\":\"HelloGame\"}");
         assertIsStartGameRequestWithValues(req, "Alex", "asdf");
     }
 
@@ -75,6 +75,6 @@ public class TicTacToeRequestParserTest {
         Assert.assertTrue(req instanceof HelloGameRequest);
         HelloGameRequest r = (HelloGameRequest) req;
         Assert.assertEquals(playerId, r.playerId);
-        Assert.assertEquals(lobbyName,r.lobbyName);
+        Assert.assertEquals(lobbyName,r.lobbyId);
     }
 }

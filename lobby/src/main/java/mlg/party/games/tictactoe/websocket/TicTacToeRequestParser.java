@@ -27,12 +27,12 @@ public class TicTacToeRequestParser extends RequestParserBase {
                     throw new IllegalArgumentException("Missing fields");
                 return gson.fromJson(json, TicTacToeMoveRequest.class);
                 case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, HelloGameRequest.class);
 
                 case "StartGame":
-                    if (!jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, StartGameRequest.class);
                 default:

@@ -1,15 +1,15 @@
 package mlg.party.lobby.websocket.requests;
 
 /**
- * {"type":"JoinLobby","lobbyName":"0298","playerName":"Herry"}
+ * {"type":"JoinLobby","lobbyId":"0298","playerName":"Herry"}
  */
 public class JoinLobbyRequest extends BasicWebSocketRequest {
-    private final String lobbyName;
+    private final String lobbyId;
     private String playerName;
 
-    public JoinLobbyRequest(String lobbyName, String playerName) {
+    public JoinLobbyRequest(String lobbyId, String playerName) {
         super("JoinLobby");
-        this.lobbyName = lobbyName;
+        this.lobbyId = lobbyId;
         this.playerName = playerName;
     }
 
@@ -17,8 +17,8 @@ public class JoinLobbyRequest extends BasicWebSocketRequest {
         this.playerName = playerName;
     }
 
-    public String getLobbyName() {
-        return lobbyName;
+    public String getLobbyId() {
+        return lobbyId;
     }
 
     public String getPlayerName() {

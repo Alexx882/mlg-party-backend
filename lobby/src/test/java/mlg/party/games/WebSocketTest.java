@@ -101,7 +101,7 @@ public class WebSocketTest {
 
         assertEquals("CreateLobby", lobbyCreatedResponse.type);
 
-        JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyName, "");
+        JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyId, "");
         List<String> responses = executor.sendPlayerMessage(joinLobbyRequest);
 
         for (String response : responses) {
@@ -120,7 +120,7 @@ public class WebSocketTest {
         assertEquals("CreateLobby", lobbyCreatedResponse.type);
 
         // 2. let the players join the lobby
-        JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyName, "");
+        JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyId, "");
         List<String> joinLobbyResponses = executor.sendPlayerMessage(joinLobbyRequest);
 
         for (String response : joinLobbyResponses) {
@@ -153,7 +153,7 @@ public class WebSocketTest {
         }
 
         // 4. start the game
-        StartGameRequest startGameRequest = new StartGameRequest(lobbyCreatedResponse.lobbyName);
+        StartGameRequest startGameRequest = new StartGameRequest(lobbyCreatedResponse.lobbyId);
         String startGameResponseString = executor.sendLeaderMessage(startGameRequest);
 
         StartGameResponse startGameResponse = gson.fromJson(startGameResponseString, StartGameResponse.class);
@@ -187,7 +187,7 @@ public class WebSocketTest {
         System.out.println(String.format("LeaderId: %s", leaderId));
 
         // 2. let the players join the lobby
-        JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyName, "");
+        JoinLobbyRequest joinLobbyRequest = new JoinLobbyRequest(lobbyCreatedResponse.lobbyId, "");
         List<String> joinLobbyResponses = executor.sendPlayerMessage(joinLobbyRequest);
 
         int position = 0;
@@ -195,8 +195,8 @@ public class WebSocketTest {
         for (String response : joinLobbyResponses) {
             JoinLobbyResponse joinLobbyResponse = gson.fromJson(response, JoinLobbyResponse.class);
             assertEquals("JoinLobby", joinLobbyResponse.type);
-            executor.assignId(joinLobbyResponse.getPlayerid(), position++);
-            ids.add(joinLobbyResponse.getPlayerid());
+            executor.assignId(joinLobbyResponse.getPlayerId(), position++);
+            ids.add(joinLobbyResponse.getPlayerId());
         }
 
         // 3.1 empty the response queue of all the leader which should be full of "PlayerJoined" notifications
@@ -224,7 +224,7 @@ public class WebSocketTest {
         }
 
         // 4. start the game
-        StartGameRequest startGameRequest = new StartGameRequest(lobbyCreatedResponse.lobbyName);
+        StartGameRequest startGameRequest = new StartGameRequest(lobbyCreatedResponse.lobbyId);
         String startGameResponseString = executor.sendLeaderMessage(startGameRequest);
 
         StartGameResponse startGameResponse = gson.fromJson(startGameResponseString, StartGameResponse.class);
@@ -259,7 +259,7 @@ public class WebSocketTest {
             await().until(executor.leader.isOpen());
 
             // 8. identify yourself at the new service
-            HelloGameRequest helloGameRequest = new HelloGameRequest(lobbyCreatedResponse.playerId, lobbyCreatedResponse.lobbyName);
+            HelloGameRequest helloGameRequest = new HelloGameRequest(lobbyCreatedResponse.playerId, lobbyCreatedResponse.lobbyId);
             String helloGameResponseString = executor.sendLeaderMessage(helloGameRequest);
 
             HelloGameResponse helloGameResponse = gson.fromJson(helloGameResponseString, HelloGameResponse.class);
@@ -280,7 +280,7 @@ public class WebSocketTest {
             SecureRandom rng = new SecureRandom();
             float shakeResult = rng.nextFloat();
             CocktailShakerResult cocktailShakerLeaderResult = new CocktailShakerResult(
-                    lobbyCreatedResponse.lobbyName,
+                    lobbyCreatedResponse.lobbyId,
                     "", // will be overwritten in GameExecutor for Players
                     shakeResult + 1,
                     shakeResult

@@ -1,6 +1,7 @@
 package mlg.party.games.cocktail_shaker;
 
 import mlg.party.games.BasicGame;
+import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
 import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
 import mlg.party.lobby.lobby.Player;
 
@@ -49,11 +50,7 @@ public class CocktailShakerGame extends BasicGame<CocktailShakerGame, CocktailSh
                 best = cur;
 
         super.notifyGameFinished(this, best.getPlayerId());
-        try{
-            Thread.sleep(1000);
-        }catch(InterruptedException e){
-            socketHandler.getLogger().error("SLEEP","sleeping failed epically");
-        }
+
         socketHandler.removeGameInstance(this);
         socketHandler.redirectToNextGame(this);
     }

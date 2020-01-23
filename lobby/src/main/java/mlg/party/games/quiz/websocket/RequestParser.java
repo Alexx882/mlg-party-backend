@@ -27,7 +27,7 @@ public class RequestParser extends RequestParserBase {
                     return gson.fromJson(json, QuizResult.class);
 
                 case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, HelloGameRequest.class);
                 default:

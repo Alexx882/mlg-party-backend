@@ -22,21 +22,16 @@ public class RequestParser extends RequestParserBase {
 
         try {
             switch (type) {
-                case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
-                        throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, HelloGameRequest.class);
                 case "CocktailShakerResult":
                     if (!jsonObject.has("playerId") || !jsonObject.has("max") || !jsonObject.has("avg"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, CocktailShakerResult.class);
                 case "HelloGame":
-                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("playerId") || !jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, HelloGameRequest.class);
-
                 case "StartGame":
-                    if (!jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, StartGameRequest.class);
                 default:
