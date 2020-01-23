@@ -19,6 +19,13 @@
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
         <sonar.organization>mlg-party</sonar.organization>
         <sonar.projectKey>mlg-party-backend</sonar.projectKey>
+
+        <sonar.projectBaseDir>.</sonar.projectBaseDir>
+
+        <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+        <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+        <sonar.jacoco.reportPath>${project.basedir}/out/jacoco/jacoco.xml</sonar.jacoco.reportPath>
+
     </properties>
 
     <build>
@@ -27,55 +34,9 @@
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>sonar-maven-plugin</artifactId>
-                    <version>2.1</version>
+                    <version>3.7.0.1746</version>
                 </plugin>
             </plugins>
         </pluginManagement>
     </build>
-
-
-    <!--    <parent>-->
-    <!--        <groupId>org.springframework.boot</groupId>-->
-    <!--        <artifactId>spring-boot-starter-parent</artifactId>-->
-    <!--        <version>2.2.1.RELEASE</version>-->
-    <!--    </parent>-->
-
-    <!--    <build>-->
-    <!--        <plugins>-->
-    <!--            <plugin>-->
-    <!--                <groupId>org.jacoco</groupId>-->
-    <!--                <artifactId>jacoco-maven-plugin</artifactId>-->
-    <!--                <version>0.7.9</version>-->
-    <!--                <executions>-->
-    <!--                    <execution>-->
-    <!--                        <id>pre-unit-test</id>-->
-    <!--                        <goals>-->
-    <!--                            <goal>prepare-agent</goal>-->
-    <!--                        </goals>-->
-    <!--                    </execution>-->
-    <!--                    <execution>-->
-    <!--                        <id>post-unit-test</id>-->
-    <!--                        <phase>test</phase>-->
-    <!--                        <goals>-->
-    <!--                            <goal>report</goal>-->
-    <!--                        </goals>-->
-    <!--                    </execution>-->
-    <!--                </executions>-->
-    <!--            </plugin>-->
-    <!--        </plugins>-->
-    <!--    </build>-->
-
-    <!--    <dependencies>-->
-    <!--        <dependency>-->
-    <!--            <groupId>junit</groupId>-->
-    <!--            <artifactId>junit</artifactId>-->
-    <!--            <version>4.12</version>-->
-    <!--            <scope>test</scope>-->
-    <!--        </dependency>-->
-    <!--        <dependency>-->
-    <!--            <groupId>org.jacoco</groupId>-->
-    <!--            <artifactId>jacoco-maven-plugin</artifactId>-->
-    <!--            <version>0.7.9</version>-->
-    <!--        </dependency>-->
-    <!--    </dependencies>-->
 </project>
