@@ -30,7 +30,6 @@ public class SpacePiratesFactory extends GameFactory<SpacePiratesGame> implement
 
     private final SpacePiratesSocketHandler handler;
 
-    @PostConstruct
     public void register() {
         registerFactory(this);
     }

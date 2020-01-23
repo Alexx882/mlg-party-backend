@@ -3,6 +3,7 @@ package mlg.party.games.websocket.responses;
 import mlg.party.lobby.lobby.Player;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Who won the game.
@@ -22,5 +23,10 @@ public class GameFinishedResponse {
         return obj instanceof GameFinishedResponse
                 && this.type == ((GameFinishedResponse) obj).type
                 && this.winnerId == ((GameFinishedResponse) obj).winnerId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(type, winnerId);
     }
 }
