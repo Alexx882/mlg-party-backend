@@ -37,6 +37,7 @@ public class CocktailShakerSocketHandler extends GameWebSocketHandler<CocktailSh
     }
 
     protected void handleRequest(WebSocketSession session, CocktailShakerResult request) {
+        gameInstances.forEach((k,v) -> System.out.println(k + ":" + v));
         CocktailShakerGame res = gameInstances.get(request.lobbyId);
         res.handleNewResult(request);
     }

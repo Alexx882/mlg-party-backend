@@ -2,19 +2,19 @@ package mlg.party.lobby.websocket.responses;
 
 public class JoinLobbyResponse extends BasicWebSocketResponse {
     private final int status;
-    private final String playerid;
+    private final String playerId;
 
-    public JoinLobbyResponse(int status, String playerid) {
+    public JoinLobbyResponse(int status, String playerId) {
         super("JoinLobby");
         this.status = status;
-        this.playerid = playerid;
+        this.playerId = playerId;
     }
 
     public int getStatus() {
         return status;
     }
 
-    public String getPlayerid() {
-        return playerid;
+    public String getPlayerId() {
+        return playerId;
     }
 }
