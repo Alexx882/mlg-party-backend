@@ -30,10 +30,6 @@ public class RequestParser extends RequestParserBase {
                     if (!jsonObject.has("playerId") || !jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, HelloGameRequest.class);
-                case "StartGame":
-                    if (!jsonObject.has("lobbyId"))
-                        throw new IllegalArgumentException("Missing fields");
-                    return gson.fromJson(json, StartGameRequest.class);
                 default:
                     throw new IllegalArgumentException("Invalid message type: '" + type + "'");
             }

@@ -1,7 +1,11 @@
 package mlg.party.games.tictactoe;
 
 
+import mlg.party.Callback;
 import mlg.party.games.BasicGame;
+import mlg.party.games.GameFinishedArgs;
+import mlg.party.games.cocktail_shaker.websocket.requests.CocktailShakerResult;
+import mlg.party.games.quiz.websocket.requests.QuizResult;
 import mlg.party.games.tictactoe.websocket.requests.TicTacToeMoveRequest;
 import mlg.party.games.tictactoe.websocket.responses.TicTacToeErrorResponse;
 import mlg.party.games.tictactoe.websocket.responses.TicTacToeMoveResponse;
@@ -9,9 +13,13 @@ import mlg.party.lobby.lobby.Player;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandler> {
 
+    private Callback<GameFinishedArgs> gameFinishedCallback = null;
+    private List<CocktailShakerResult> gameResults = new CopyOnWriteArrayList<>();
     private final String endpoint;
     private TicTacToeLogic gameLogic;
 
@@ -19,6 +27,9 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
         super(lobbyId, participants);
         this.endpoint = endpoint;
         this.gameLogic= new TicTacToeLogic(participants);
+    }
+    public void registerResultCallback(Callback<GameFinishedArgs> callback) {
+        gameFinishedCallback = callback;
     }
 
     @Override
@@ -70,10 +81,21 @@ public class TicTacToeGame extends BasicGame<TicTacToeGame, TicTacToeSocketHandl
     }
 
     private void manageGameFinished(int result, String playerId) {
+
+        String tmp;
         if(result==201){
-            super.notifyGameFinished(this, playerId);
+           tmp=playerId;
+            for (Player player : players)
+                if (player.getId().equals(playerId))
+                    player.increasePoints();
+            players.sort((p1, p2) -> p2.getPoints() - p1.getPoints());
         }else {
-            super.notifyGameFinished(this, "TIE");
+           tmp="Draw";
+        }
+        super.notifyGameFinished(this, tmp);
+        if (gameFinishedCallback != null) {
+            GameFinishedArgs args = new GameFinishedArgs(lobbyId,tmp);
+            gameFinishedCallback.callback(args);
         }
         socketHandler.removeGameInstance(this);
         socketHandler.redirectToNextGame(this);
