@@ -173,7 +173,7 @@ public class WebSocketTest {
         assertTrue(executor.isConnectionOfAllPlayersClosed());
     }
 
-    @Test
+//    @Test
     public void cocktailShakerTest() throws IOException, DeploymentException {
         // 1. create a lobby
         CreateLobbyRequest createLobbyRequest = new CreateLobbyRequest(executor.leader.name);
