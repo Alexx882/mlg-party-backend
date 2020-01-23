@@ -61,7 +61,8 @@ public class TicTacToeLogicTest {
 
     @Test
     public void notCurrentPlayerTest(){
-        Assert.assertEquals(400,gameLogic.newMoveAttempt(0,0,player2));
+        gameLogic.newMoveAttempt(0,0,player1);
+        Assert.assertEquals(400,gameLogic.newMoveAttempt(0,0,player1));
     }
 
     @Test
@@ -72,7 +73,7 @@ public class TicTacToeLogicTest {
                 {0, 0, 0}
         };
         gameLogic.setGameBoard(testBoard);
-        Assert.assertEquals(400,gameLogic.newMoveAttempt(0,0,player2));
+        Assert.assertEquals(401,gameLogic.newMoveAttempt(0,0,player2));
     }
     @Test
     public void winHorizontalTest(){
