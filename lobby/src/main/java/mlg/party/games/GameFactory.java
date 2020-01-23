@@ -1,5 +1,6 @@
 package mlg.party.games;
 
+import mlg.party.games.tictactoe.TicTacToeFactory;
 import mlg.party.lobby.lobby.Player;
 
 import java.util.Collections;
@@ -17,10 +18,13 @@ public abstract class GameFactory<T extends BasicGame<?, ?>> {
     public void registerFactory(GameFactory<?> factory) {
         factories.add(factory);
     }
+    private static boolean  tmPTest=false;
 
     public static GameFactory<?> getRandomGameFactory() {
         Collections.shuffle(factories);
         return factories.get(0);
+
+
     }
 
     /**

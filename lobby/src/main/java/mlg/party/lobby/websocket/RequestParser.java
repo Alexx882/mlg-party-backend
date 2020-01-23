@@ -30,12 +30,12 @@ public class RequestParser extends RequestParserBase {
                     return gson.fromJson(json, CreateLobbyRequest.class);
 
                 case "JoinLobby":
-                    if (!jsonObject.has("lobbyName") || !jsonObject.has("playerName"))
+                    if (!jsonObject.has("lobbyId") || !jsonObject.has("playerName"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, JoinLobbyRequest.class);
 
                 case "StartGame":
-                    if (!jsonObject.has("lobbyName"))
+                    if (!jsonObject.has("lobbyId"))
                         throw new IllegalArgumentException("Missing fields");
                     return gson.fromJson(json, StartGameRequest.class);
 

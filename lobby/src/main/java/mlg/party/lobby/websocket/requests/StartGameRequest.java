@@ -1,14 +1,14 @@
 package mlg.party.lobby.websocket.requests;
 
 public class StartGameRequest extends BasicWebSocketRequest {
-    private String lobbyName;
+    private String lobbyId;
 
-    public StartGameRequest(String lobbyName) {
+    public StartGameRequest(String lobbyId) {
         super("StartGame");
-        this.lobbyName = lobbyName;
+        this.lobbyId = lobbyId;
     }
 
-    public String getLobbyName() {
-        return lobbyName;
+    public String getLobbyId() {
+        return lobbyId;
     }
 }

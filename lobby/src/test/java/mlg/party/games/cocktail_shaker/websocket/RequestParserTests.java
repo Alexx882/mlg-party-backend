@@ -48,7 +48,7 @@ public class RequestParserTests {
 
     @Test
     public void parseMessage_HelloGameType_HelloGameRequest() {
-        BasicWebSocketRequest req = parser.parseMessage("{\"type\":\"HelloGame\", \"playerId\":\"69\", \"lobbyName\":\"123\"}");
+        BasicWebSocketRequest req = parser.parseMessage("{\"type\":\"HelloGame\", \"playerId\":\"69\", \"lobbyId\":\"123\"}");
         assertIsHelloGameRequestWithIdAndLobby("69", "123", req);
     }
 
@@ -69,7 +69,7 @@ public class RequestParserTests {
 
         HelloGameRequest r = (HelloGameRequest) req;
         Assert.assertEquals(expectedId, r.playerId);
-        Assert.assertEquals(expectedLobby, r.lobbyName);
+        Assert.assertEquals(expectedLobby, r.lobbyId);
     }
 
 }

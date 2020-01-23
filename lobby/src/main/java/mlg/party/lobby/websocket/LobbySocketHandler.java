@@ -76,19 +76,19 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @throws IOException - unexpectedly closing connection, etc.
      */
     private void handle(WebSocketSession session, JoinLobbyRequest request) throws IOException {
-        logger.log(this, String.format("Player(%s) wants to join Lobby(%s)", request.getPlayerName(), request.getLobbyName()));
+        logger.log(this, String.format("Player(%s) wants to join Lobby(%s)", request.getPlayerName(), request.getLobbyId()));
 
         JoinLobbyResponse response;
 
         sessionIds.get(session).setName(request.getPlayerName());
 
-        if (lobbyService.addPlayerToLobby(request.getLobbyName(), sessionIds.get(session)))
+        if (lobbyService.addPlayerToLobby(request.getLobbyId(), sessionIds.get(session)))
             response = new JoinLobbyResponse(200, sessionIds.get(session).getId());
         else
             response = new JoinLobbyResponse(404, sessionIds.get(session).getId());
         session.sendMessage(new TextMessage(gson.toJson(response)));
 
-        List<Player> participants = lobbyService.getPlayersForLobby(request.getLobbyName());
+        List<Player> participants = lobbyService.getPlayersForLobby(request.getLobbyId());
         PlayerListResponse response2 = new PlayerListResponse(participants.stream().map(Player::getName).collect(Collectors.toList()));
 
         sendMessageToPlayers(
@@ -128,29 +128,29 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @throws IOException - unexpected closing of a session of one of the participants
      */
     private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
-        List<Player> players = null;
+        List<Player> players ;
         try {
-            players = lobbyService.getPlayersForLobby(request.getLobbyName());
+            players = lobbyService.getPlayersForLobby(request.getLobbyId());
         } catch (IllegalArgumentException e) {
             // if lobby does not exist
             sendMessage(session, new StartGameResponse(404, ""));
             return;
         }
 
-        logger.log(this, String.format("lobby '%s' wants to start the game.", request.getLobbyName()));
+        logger.log(this, String.format("lobby '%s' wants to start the game.", request.getLobbyId()));
 
         // 1. select a new random game from the register
-        BasicGame<?, ?> game = GameFactory.getRandomGameFactory().createGame(request.getLobbyName(), lobbyService.getPlayersForLobby(request.getLobbyName()));
+        BasicGame<?, ?> game = GameFactory.getRandomGameFactory().createGame(request.getLobbyId(), lobbyService.getPlayersForLobby(request.getLobbyId()));
 
         // 2. give the game information about participating players and their websocket
         game.startGame();
 
         // 3. inform the players about the new game
         StartGameResponse response = new StartGameResponse(200, game.getGameEndpoint());
-        sendMessageToPlayers(lobbyService.getPlayersForLobby(request.getLobbyName()), gson.toJson(response));
+        sendMessageToPlayers(lobbyService.getPlayersForLobby(request.getLobbyId()), gson.toJson(response));
 
         // 4. clear lobby info as the lobby is now "owned" by the GameSocketHandler
-        lobbyService.closeLobby(request.getLobbyName());
+        lobbyService.closeLobby(request.getLobbyId());
 
         // 5. close websocket connections and remove them from the lists
         List<WebSocketSession> toRemove = new LinkedList<>();
@@ -176,6 +176,12 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @param playerConnections - maps participant to their websocket connection
      */
     public void redirectToNewGame(String lobbyId, Map<Player, WebSocketSession> playerConnections) throws IOException {
+        //SOME DELAY
+        try{
+            Thread.sleep(1500);
+        }catch(InterruptedException e){
+            logger.error("SLEEP","sleeping failed epically");
+        }
         List<Player> participants = new LinkedList<>(playerConnections.keySet());
 
         // 1. select a new random game from the register
@@ -193,7 +199,6 @@ public class LobbySocketHandler extends TextWebSocketHandler {
         for (WebSocketSession session : playerConnections.values())
             session.close(CloseStatus.NORMAL);
 
-        playerConnections.clear();
     }
 
     public void sendMessage(WebSocketSession s, Object message) throws IOException {

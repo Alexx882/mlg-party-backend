@@ -6,6 +6,7 @@ mlg:
       base: "ws://test.nope-api.systems:8091"
       lobby: "/lobby"
       shaker: "/game/shaker"
+      tictactoe: "/game/tictactoe"
       quiz: "/game/quiz"
       rps: "/game/rps"
       clicker: "/game/clicker"
