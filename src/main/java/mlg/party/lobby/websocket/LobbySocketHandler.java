@@ -128,7 +128,7 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      * @throws IOException - unexpected closing of a session of one of the participants
      */
     private void handle(WebSocketSession session, StartGameRequest request) throws IOException {
-        List<Player> players ;
+        List<Player> players;
         try {
             players = lobbyService.getPlayersForLobby(request.getLobbyId());
         } catch (IllegalArgumentException e) {
@@ -177,10 +177,11 @@ public class LobbySocketHandler extends TextWebSocketHandler {
      */
     public void redirectToNewGame(String lobbyId, Map<Player, WebSocketSession> playerConnections) throws IOException {
         //SOME DELAY
-        try{
+        try {
             Thread.sleep(1500);
-        }catch(InterruptedException e){
-            logger.error("SLEEP","sleeping failed epically");
+        } catch (InterruptedException e) {
+            logger.error("SLEEP", "sleeping failed epically, dude wtf?");
+            Thread.currentThread().interrupt();
         }
         List<Player> participants = new LinkedList<>(playerConnections.keySet());
 
