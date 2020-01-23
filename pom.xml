@@ -4,9 +4,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>mlg.party</groupId>
-    <artifactId>lobby</artifactId>
+    <artifactId>mlg-party-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>lobby</name>
+    <name>mlg-party-backend</name>
     <description>Creates and manages the lobbies opened by endpoint users</description>
 
     <packaging>jar</packaging>
