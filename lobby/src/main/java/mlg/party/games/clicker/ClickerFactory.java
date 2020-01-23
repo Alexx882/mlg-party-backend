@@ -1,7 +1,6 @@
-package mlg.party.games.cocktail_shaker;
+package mlg.party.games.clicker;
 
 import mlg.party.games.GameFactory;
-import mlg.party.games.cocktail_shaker.websocket.CocktailShakerSocketHandler;
 import mlg.party.lobby.lobby.Player;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
@@ -16,30 +15,29 @@ import java.util.List;
 @Service
 @Configuration
 @EnableWebSocket
-public class CocktailShakerFactory extends GameFactory<CocktailShakerGame> implements WebSocketConfigurer {
+public class ClickerFactory extends GameFactory<ClickerGame> implements WebSocketConfigurer {
 
     @Value("${mlg.games.endpoints.base}")
     private String host;
 
-    @Value("${mlg.games.endpoints.shaker}")
+    @Value("${mlg.games.endpoints.clicker}")
     private String url;
 
-    public CocktailShakerFactory(CocktailShakerSocketHandler handler) {
+    public ClickerFactory(ClickerSocketHandler handler) {
         this.handler = handler;
     }
 
-    private final CocktailShakerSocketHandler handler;
-
+    private final ClickerSocketHandler handler;
 
     public void register() {
         registerFactory(this);
     }
 
     @Override
-    public CocktailShakerGame createGame(String lobbyId, List<Player> players) {
-        CocktailShakerGame cocktailShakerGame = new CocktailShakerGame(lobbyId, players, url);
-        cocktailShakerGame.setSocketHandler(handler);
-        return cocktailShakerGame;
+    public ClickerGame createGame(String lobbyId, List<Player> players) {
+        ClickerGame clickerGameGame = new ClickerGame(lobbyId, players, url);
+        clickerGameGame.setSocketHandler(handler);
+        return clickerGameGame;
     }
 
     @Override
